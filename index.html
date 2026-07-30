@@ -54,15 +54,22 @@
                 </div>
             </div>
 
-            <!-- Student Info Input Panel -->
-            <div class="flex items-center gap-2 bg-indigo-950/60 p-1.5 px-3 rounded-lg border border-indigo-700/50 text-sm">
-                <div class="flex items-center gap-1.5">
-                    <i class="fa-solid fa-users text-indigo-400"></i>
-                    <input type="text" id="group-name" placeholder="모둠명 (예: 1모둠)" class="bg-indigo-900/80 border border-indigo-700 text-white placeholder-indigo-400 text-xs rounded px-2 py-1 w-24 focus:outline-none focus:border-indigo-400">
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <i class="fa-solid fa-user text-indigo-400"></i>
-                    <input type="text" id="student-name" placeholder="이름 (예: 홍길동)" class="bg-indigo-900/80 border border-indigo-700 text-white placeholder-indigo-400 text-xs rounded px-2 py-1 w-24 focus:outline-none focus:border-indigo-400">
+            <div class="flex items-center gap-3">
+                <!-- Teacher Dashboard Button -->
+                <button onclick="alert('교사용 대시보드로 이동합니다. (시뮬레이션)')" class="bg-indigo-700 hover:bg-indigo-600 text-white text-xs px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 border border-indigo-500 shadow-sm hidden sm:flex">
+                    <i class="fa-solid fa-chalkboard-user"></i> 교사 대시보드
+                </button>
+
+                <!-- Student Info Input Panel -->
+                <div class="flex items-center gap-2 bg-indigo-950/60 p-1.5 px-3 rounded-lg border border-indigo-700/50 text-sm">
+                    <div class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-users text-indigo-400"></i>
+                        <input type="text" id="group-name" placeholder="모둠명" class="bg-indigo-900/80 border border-indigo-700 text-white placeholder-indigo-400 text-xs rounded px-2 py-1 w-20 focus:outline-none focus:border-indigo-400">
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <i class="fa-solid fa-user text-indigo-400"></i>
+                        <input type="text" id="student-name" placeholder="이름" class="bg-indigo-900/80 border border-indigo-700 text-white placeholder-indigo-400 text-xs rounded px-2 py-1 w-20 focus:outline-none focus:border-indigo-400">
+                    </div>
                 </div>
             </div>
         </div>
@@ -205,8 +212,8 @@
                             <i class="fa-solid fa-code-fork text-xl"></i>
                         </div>
                         <div>
-                            <h2 class="text-xl font-bold text-slate-800">2단계 탐색: DNA → mRNA 전사(Transcription) 시뮬레이터</h2>
-                            <p class="text-sm text-slate-500">교사가 제시한 DNA 주형 가닥에 염기 상보성 규칙(A-U, T-A, G-C, C-G)을 적용하여 mRNA를 합성해보세요.</p>
+                            <h2 class="text-xl font-bold text-slate-800">2단계 탐색: DNA → mRNA 전사(Transcription)</h2>
+                            <p class="text-sm text-slate-500">교사가 제시한 DNA 주형 가닥에 염기 상보성 규칙을 적용하여 mRNA를 합성해보세요.</p>
                         </div>
                     </div>
                     <button onclick="resetTranscription()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium px-3 py-1.5 rounded-lg border border-slate-300 transition flex items-center gap-1">
@@ -241,7 +248,6 @@
                     <div>
                         <div class="flex items-center justify-between text-xs text-slate-400 font-mono mb-2">
                             <span>DNA 주형 가닥 (3' → 5')</span>
-                            <span class="text-emerald-400">교사 제시 염기 서열</span>
                         </div>
                         <div id="dna-strand-container" class="flex flex-wrap gap-2 p-3 bg-slate-800/80 rounded-xl border border-slate-700 font-mono text-lg font-bold">
                             <!-- JS Injection -->
@@ -286,7 +292,7 @@
                         </div>
                         <div>
                             <h2 class="text-xl font-bold text-slate-800">3단계 적용: 코돈 해독과 단백질 번역(Translation)</h2>
-                            <p class="text-sm text-slate-500">mRNA의 코돈(3개 염기)을 유전암호표에서 찾아 아미노산 서열로 번역하여 단백질을 완성하세요.</p>
+                            <p class="text-sm text-slate-500">전체 코돈표를 참조하여 mRNA의 코돈에 맞는 아미노산을 선택하고 단백질을 완성하세요.</p>
                         </div>
                     </div>
                     <button onclick="resetTranslation()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium px-3 py-1.5 rounded-lg border border-slate-300 transition flex items-center gap-1">
@@ -301,8 +307,8 @@
                                 <i class="fa-solid fa-circle-info"></i> 주요 암호 규칙
                             </div>
                             <div class="grid grid-cols-2 gap-2 mt-1">
-                                <p>• <strong>시작 코돈:</strong> <span class="bg-emerald-200 text-emerald-900 px-1.5 py-0.5 rounded font-mono font-bold">AUG</span> (메티오닌/Met)</p>
-                                <p>• <strong>종결 코돈:</strong> <span class="bg-rose-200 text-rose-900 px-1.5 py-0.5 rounded font-mono font-bold">UAA, UAG, UGA</span> (번역 종료)</p>
+                                <p>• <strong>시작 코돈:</strong> <span class="bg-emerald-200 text-emerald-900 px-1.5 py-0.5 rounded font-mono font-bold">AUG</span> (메티오닌)</p>
+                                <p>• <strong>종결 코돈:</strong> <span class="bg-rose-200 text-rose-900 px-1.5 py-0.5 rounded font-mono font-bold">UAA, UAG, UGA</span> (종료)</p>
                             </div>
                         </div>
 
@@ -324,13 +330,13 @@
                                 <span id="protein-status-tag" class="text-xs bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full font-normal">번역 진행 중</span>
                             </h4>
                             <div id="amino-acid-chain" class="flex flex-wrap items-center gap-2 min-h-[60px] p-3 bg-white rounded-xl border border-indigo-100 shadow-inner">
-                                <p id="amino-placeholder" class="text-xs text-slate-400 italic w-full">우측 암호표를 참조하여 각 코돈에 맞는 아미노산을 선택하세요.</p>
+                                <p id="amino-placeholder" class="text-xs text-slate-400 italic w-full">우측 암호표를 참조하여 각 코돈에 맞는 아미노산을 추가하세요.</p>
                             </div>
                         </div>
 
                         <div class="flex gap-3">
                             <button onclick="checkTranslationResult()" class="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl shadow transition flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-check-double"></i> 번역 결과 확인 및 검증
+                                <i class="fa-solid fa-check-double"></i> 번역 결과 확인 및 4단계로 이동
                             </button>
                         </div>
                         <div id="translation-msg" class="hidden p-4 rounded-xl text-sm font-semibold text-center"></div>
@@ -340,12 +346,12 @@
                         <div>
                             <div class="flex items-center justify-between mb-3">
                                 <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
-                                    <i class="fa-solid fa-table-cells text-indigo-600"></i> 유전 암호표
+                                    <i class="fa-solid fa-table-cells text-indigo-600"></i> 전체 유전 암호표
                                 </h3>
                                 <input type="text" id="codon-search-input" onkeyup="searchCodon()" placeholder="검색 (예: AUG)" class="text-xs px-2.5 py-1 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono w-28 uppercase">
                             </div>
 
-                            <div class="overflow-y-auto max-h-[380px] border border-slate-200 rounded-xl bg-white shadow-sm">
+                            <div class="overflow-y-auto h-[420px] border border-slate-200 rounded-xl bg-white shadow-sm">
                                 <table class="w-full text-xs text-left border-collapse">
                                     <thead class="bg-slate-100 sticky top-0 font-semibold text-slate-700 border-b border-slate-200 z-10">
                                         <tr>
@@ -374,19 +380,18 @@
                     </div>
                     <div>
                         <h2 class="text-xl font-bold text-slate-800">4단계 정리: 유전자 발현 요약 및 형성평가</h2>
-                        <p class="text-sm text-slate-500">전사와 번역 과정의 중심 원리(Central Dogma)를 정리하고 형성평가를 작성하세요.</p>
+                        <p class="text-sm text-slate-500">배운 내용을 바탕으로 간단한 형성평가를 풀고 제출해 주세요.</p>
                     </div>
                 </div>
 
                 <div class="bg-slate-900 text-white p-6 rounded-2xl mb-8">
                     <h3 class="text-sm font-bold text-amber-400 mb-4 uppercase tracking-wider flex items-center gap-2">
-                        <i class="fa-solid fa-diagram-project"></i> 유전 정보의 흐름 (중심 원리 - Central Dogma)
+                        <i class="fa-solid fa-diagram-project"></i> 유전 정보의 흐름 (중심 원리)
                     </h3>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                         <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                             <span class="text-xs text-indigo-400 font-bold block mb-1">유전 정보 저장</span>
                             <div class="text-xl font-bold text-white mb-1">DNA</div>
-                            <p class="text-xs text-slate-400">염기 서열(A, T, G, C)에 유전 정보 암호화</p>
                         </div>
                         <div class="flex flex-col items-center justify-center py-2">
                             <i class="fa-solid fa-right-long text-2xl text-emerald-400 hidden md:block"></i>
@@ -396,7 +401,6 @@
                         <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                             <span class="text-xs text-sky-400 font-bold block mb-1">유전 정보 전달</span>
                             <div class="text-xl font-bold text-white mb-1">mRNA</div>
-                            <p class="text-xs text-slate-400">상보적 염기쌍(A, U, G, C)으로 단일 가닥 복사</p>
                         </div>
                     </div>
                     <div class="flex justify-center my-3">
@@ -408,7 +412,6 @@
                     <div class="bg-slate-800/90 p-4 rounded-xl border border-indigo-500/30 text-center max-w-md mx-auto">
                         <span class="text-xs text-rose-400 font-bold block mb-1">유전자 발현 완료</span>
                         <div class="text-xl font-bold text-amber-300 mb-1">단백질 (Protein)</div>
-                        <p class="text-xs text-slate-300">코돈에 따라 아미노산 서열이 연결되어 독특한 구조와 기능을 수행</p>
                     </div>
                 </div>
 
@@ -420,17 +423,17 @@
                     <!-- Q1 -->
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
                         <p class="text-sm font-bold text-slate-800">Q1. DNA 주형 가닥의 염기 서열이 <span class="font-mono text-indigo-600">3'- TAC -5'</span> 일 때, 전사되는 mRNA의 코돈은 무엇인가요?</p>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                            <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 cursor-pointer hover:bg-indigo-50 transition">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-sm mt-2">
+                            <label class="flex items-center gap-2 p-3 bg-white rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 transition shadow-sm">
                                 <input type="radio" name="q1" value="1" class="text-indigo-600"> 5'- ATG -3'
                             </label>
-                            <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 cursor-pointer hover:bg-indigo-50 transition">
+                            <label class="flex items-center gap-2 p-3 bg-white rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 transition shadow-sm">
                                 <input type="radio" name="q1" value="2" class="text-indigo-600"> 5'- AUG -3'
                             </label>
-                            <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 cursor-pointer hover:bg-indigo-50 transition">
+                            <label class="flex items-center gap-2 p-3 bg-white rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 transition shadow-sm">
                                 <input type="radio" name="q1" value="3" class="text-indigo-600"> 5'- UAC -3'
                             </label>
-                            <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 cursor-pointer hover:bg-indigo-50 transition">
+                            <label class="flex items-center gap-2 p-3 bg-white rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 transition shadow-sm">
                                 <input type="radio" name="q1" value="4" class="text-indigo-600"> 5'- GAU -3'
                             </label>
                         </div>
@@ -438,27 +441,27 @@
 
                     <!-- Q2 -->
                     <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
-                        <p class="text-sm font-bold text-slate-800">Q2. 핵 내부의 DNA 유전 정보를 세포질의 리보솜으로 전달하는 RNA는 무엇인가요?</p>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-                            <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 cursor-pointer hover:bg-indigo-50 transition">
-                                <input type="radio" name="q2" value="1" class="text-indigo-600"> tRNA
+                        <p class="text-sm font-bold text-slate-800">Q2. 유전 정보를 바탕으로 세포질에서 단백질이 합성되는 과정은 무엇이라고 하나요?</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 text-sm mt-2">
+                            <label class="flex items-center gap-2 p-3 bg-white rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 transition shadow-sm">
+                                <input type="radio" name="q2" value="1" class="text-indigo-600"> 복제
                             </label>
-                            <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 cursor-pointer hover:bg-indigo-50 transition">
-                                <input type="radio" name="q2" value="2" class="text-indigo-600"> mRNA
+                            <label class="flex items-center gap-2 p-3 bg-white rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 transition shadow-sm">
+                                <input type="radio" name="q2" value="2" class="text-indigo-600"> 전사
                             </label>
-                            <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 cursor-pointer hover:bg-indigo-50 transition">
-                                <input type="radio" name="q2" value="3" class="text-indigo-600"> rRNA
+                            <label class="flex items-center gap-2 p-3 bg-white rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 transition shadow-sm">
+                                <input type="radio" name="q2" value="3" class="text-indigo-600"> 번역
                             </label>
-                            <label class="flex items-center gap-2 p-2 bg-white rounded border border-slate-200 cursor-pointer hover:bg-indigo-50 transition">
-                                <input type="radio" name="q2" value="4" class="text-indigo-600"> miRNA
+                            <label class="flex items-center gap-2 p-3 bg-white rounded-lg border border-slate-200 cursor-pointer hover:bg-indigo-50 transition shadow-sm">
+                                <input type="radio" name="q2" value="4" class="text-indigo-600"> 돌연변이
                             </label>
                         </div>
                     </div>
 
-                    <button onclick="submitQuiz()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-xl shadow transition mt-4">
+                    <button onclick="submitQuiz()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3.5 rounded-xl shadow transition mt-4 text-lg">
                         제출 및 정답 확인
                     </button>
-                    <div id="quiz-result" class="hidden p-4 rounded-xl text-sm font-semibold text-center"></div>
+                    <div id="quiz-result" class="hidden p-5 rounded-xl text-base font-semibold text-center shadow-inner"></div>
                 </div>
             </div>
         </section>
@@ -484,6 +487,8 @@
             if(tabId === 'transcription') btn.classList.add('border-emerald-400');
             if(tabId === 'translation') btn.classList.add('border-sky-400');
             if(tabId === 'summary') btn.classList.add('border-rose-400');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // --- 방탈출 (Tab 1) 로직 ---
@@ -493,13 +498,16 @@
             res.classList.remove('hidden', 'text-rose-600', 'text-emerald-600', 'bg-rose-50', 'bg-emerald-50', 'p-3', 'rounded');
             res.classList.add('p-3', 'rounded');
             
-            // A12=D, B07=N, C31=A -> "DNA"
             if(input === 'DNA') {
                 res.classList.add('text-emerald-700', 'bg-emerald-50');
-                res.innerHTML = '<i class="fa-solid fa-circle-check"></i> 정답입니다! 암호를 완벽히 해독했습니다. 2단계로 넘어가세요.';
+                res.innerHTML = '<i class="fa-solid fa-circle-check"></i> 정답입니다! 잠시 후 2단계 전사 과정으로 이동합니다.';
+                // 1.5초 후 2단계 자동 이동
+                setTimeout(() => {
+                    switchTab('transcription');
+                }, 1500);
             } else {
                 res.classList.add('text-rose-700', 'bg-rose-50');
-                res.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> 암호가 틀렸습니다. 표에서 A12, B07, C31에 해당하는 문자를 순서대로 찾아보세요.';
+                res.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> 틀렸습니다. 표에서 A12, B07, C31에 해당하는 문자를 찾으세요.';
             }
         }
 
@@ -553,7 +561,6 @@
                 container.innerHTML += `<div class="w-10 h-10 flex items-center justify-center rounded-md shadow-sm base-badge font-bold ${colorClass}">${currentMRNA[i]}</div>`;
             }
             
-            // Fill empty slots
             for (let i = currentMRNA.length; i < 12; i++) {
                 container.innerHTML += `<div class="w-10 h-10 flex items-center justify-center border-2 border-dashed border-slate-700 rounded-md text-slate-600">?</div>`;
             }
@@ -566,35 +573,112 @@
                 
                 if (currentMRNA === targetMRNA) {
                     feedback.classList.add('bg-emerald-100', 'text-emerald-700', 'border-emerald-300');
-                    feedback.innerHTML = '<i class="fa-solid fa-thumbs-up"></i> 훌륭합니다! 상보적 염기쌍(A-U, T-A, G-C, C-G) 규칙에 맞게 전사를 완벽히 수행했습니다. 3단계로 이동하세요.';
-                    initTranslation(); // 번역 단계 자동 초기화
+                    feedback.innerHTML = '<i class="fa-solid fa-thumbs-up"></i> 전사를 완벽히 수행했습니다! 잠시 후 3단계로 이동합니다.';
+                    initTranslation(); 
+                    // 1.5초 후 3단계 자동 이동
+                    setTimeout(() => {
+                        switchTab('translation');
+                    }, 1500);
                 } else {
                     feedback.classList.add('bg-rose-100', 'text-rose-700', 'border-rose-300');
-                    feedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> 염기 서열에 오류가 있습니다. 지우기 버튼을 누르고 상보성 규칙을 다시 확인하세요.';
+                    feedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> 오류가 있습니다. 상보성 규칙(A-U, T-A, G-C, C-G)을 확인하세요.';
                 }
             }
         }
 
-        // --- 번역 (Tab 3) 로직 ---
+        // --- 번역 (Tab 3) 로직 (전체 64개 코돈) ---
         const geneticCodeMap = [
-            { codon: "AUG", amino: "메티오닌 (Met)", type: "start" },
+            // 페닐알라닌 (Phe)
             { codon: "UUU", amino: "페닐알라닌 (Phe)", type: "normal" },
             { codon: "UUC", amino: "페닐알라닌 (Phe)", type: "normal" },
+            // 류신 (Leu)
+            { codon: "UUA", amino: "류신 (Leu)", type: "normal" },
+            { codon: "UUG", amino: "류신 (Leu)", type: "normal" },
+            { codon: "CUU", amino: "류신 (Leu)", type: "normal" },
+            { codon: "CUC", amino: "류신 (Leu)", type: "normal" },
+            { codon: "CUA", amino: "류신 (Leu)", type: "normal" },
+            { codon: "CUG", amino: "류신 (Leu)", type: "normal" },
+            // 이소류신 (Ile)
+            { codon: "AUU", amino: "이소류신 (Ile)", type: "normal" },
+            { codon: "AUC", amino: "이소류신 (Ile)", type: "normal" },
+            { codon: "AUA", amino: "이소류신 (Ile)", type: "normal" },
+            // 메티오닌 (Met) - 시작 코돈
+            { codon: "AUG", amino: "메티오닌 (Met)", type: "start" },
+            // 발린 (Val)
+            { codon: "GUU", amino: "발린 (Val)", type: "normal" },
+            { codon: "GUC", amino: "발린 (Val)", type: "normal" },
+            { codon: "GUA", amino: "발린 (Val)", type: "normal" },
+            { codon: "GUG", amino: "발린 (Val)", type: "normal" },
+            // 세린 (Ser)
+            { codon: "UCU", amino: "세린 (Ser)", type: "normal" },
+            { codon: "UCC", amino: "세린 (Ser)", type: "normal" },
+            { codon: "UCA", amino: "세린 (Ser)", type: "normal" },
+            { codon: "UCG", amino: "세린 (Ser)", type: "normal" },
+            { codon: "AGU", amino: "세린 (Ser)", type: "normal" },
+            { codon: "AGC", amino: "세린 (Ser)", type: "normal" },
+            // 프롤린 (Pro)
             { codon: "CCU", amino: "프롤린 (Pro)", type: "normal" },
             { codon: "CCC", amino: "프롤린 (Pro)", type: "normal" },
-            { codon: "GAG", amino: "글루탐산 (Glu)", type: "normal" },
-            { codon: "GAA", amino: "글루탐산 (Glu)", type: "normal" },
+            { codon: "CCA", amino: "프롤린 (Pro)", type: "normal" },
+            { codon: "CCG", amino: "프롤린 (Pro)", type: "normal" },
+            // 트레오닌 (Thr)
+            { codon: "ACU", amino: "트레오닌 (Thr)", type: "normal" },
+            { codon: "ACC", amino: "트레오닌 (Thr)", type: "normal" },
+            { codon: "ACA", amino: "트레오닌 (Thr)", type: "normal" },
+            { codon: "ACG", amino: "트레오닌 (Thr)", type: "normal" },
+            // 알라닌 (Ala)
             { codon: "GCU", amino: "알라닌 (Ala)", type: "normal" },
+            { codon: "GCC", amino: "알라닌 (Ala)", type: "normal" },
+            { codon: "GCA", amino: "알라닌 (Ala)", type: "normal" },
+            { codon: "GCG", amino: "알라닌 (Ala)", type: "normal" },
+            // 티로신 (Tyr)
+            { codon: "UAU", amino: "티로신 (Tyr)", type: "normal" },
+            { codon: "UAC", amino: "티로신 (Tyr)", type: "normal" },
+            // 종결 코돈 (Stop)
             { codon: "UAA", amino: "종결 코돈 (Stop)", type: "stop" },
             { codon: "UAG", amino: "종결 코돈 (Stop)", type: "stop" },
-            { codon: "UGA", amino: "종결 코돈 (Stop)", type: "stop" }
+            { codon: "UGA", amino: "종결 코돈 (Stop)", type: "stop" },
+            // 히스티딘 (His)
+            { codon: "CAU", amino: "히스티딘 (His)", type: "normal" },
+            { codon: "CAC", amino: "히스티딘 (His)", type: "normal" },
+            // 글루타민 (Gln)
+            { codon: "CAA", amino: "글루타민 (Gln)", type: "normal" },
+            { codon: "CAG", amino: "글루타민 (Gln)", type: "normal" },
+            // 아스파라긴 (Asn)
+            { codon: "AAU", amino: "아스파라긴 (Asn)", type: "normal" },
+            { codon: "AAC", amino: "아스파라긴 (Asn)", type: "normal" },
+            // 리신 (Lys)
+            { codon: "AAA", amino: "리신 (Lys)", type: "normal" },
+            { codon: "AAG", amino: "리신 (Lys)", type: "normal" },
+            // 아스파르트산 (Asp)
+            { codon: "GAU", amino: "아스파르트산 (Asp)", type: "normal" },
+            { codon: "GAC", amino: "아스파르트산 (Asp)", type: "normal" },
+            // 글루탐산 (Glu)
+            { codon: "GAA", amino: "글루탐산 (Glu)", type: "normal" },
+            { codon: "GAG", amino: "글루탐산 (Glu)", type: "normal" },
+            // 시스테인 (Cys)
+            { codon: "UGU", amino: "시스테인 (Cys)", type: "normal" },
+            { codon: "UGC", amino: "시스테인 (Cys)", type: "normal" },
+            // 트립토판 (Trp)
+            { codon: "UGG", amino: "트립토판 (Trp)", type: "normal" },
+            // 아르기닌 (Arg)
+            { codon: "CGU", amino: "아르기닌 (Arg)", type: "normal" },
+            { codon: "CGC", amino: "아르기닌 (Arg)", type: "normal" },
+            { codon: "CGA", amino: "아르기닌 (Arg)", type: "normal" },
+            { codon: "CGG", amino: "아르기닌 (Arg)", type: "normal" },
+            { codon: "AGA", amino: "아르기닌 (Arg)", type: "normal" },
+            { codon: "AGG", amino: "아르기닌 (Arg)", type: "normal" },
+            // 글리신 (Gly)
+            { codon: "GGU", amino: "글리신 (Gly)", type: "normal" },
+            { codon: "GGC", amino: "글리신 (Gly)", type: "normal" },
+            { codon: "GGA", amino: "글리신 (Gly)", type: "normal" },
+            { codon: "GGG", amino: "글리신 (Gly)", type: "normal" }
         ];
         
         let selectedAminos = [];
         const requiredCodons = ["AUG", "CCU", "GAG", "UAA"];
 
         function initTranslation() {
-            // 코돈 단위 분할 렌더링
             const container = document.getElementById('codon-units-container');
             container.innerHTML = '';
             requiredCodons.forEach((codon, index) => {
@@ -605,8 +689,6 @@
                     </div>
                 `;
             });
-
-            // 유전 암호표 렌더링
             renderGeneticCodeTable();
         }
 
@@ -662,17 +744,17 @@
                 if(item.type === 'stop') color = "bg-rose-100 text-rose-800 border-rose-300";
 
                 chain.innerHTML += `
-                    <div class="flex items-center">
+                    <div class="flex items-center mt-1 mb-1">
                         <div class="px-3 py-1.5 rounded-full border shadow-sm text-xs font-bold ${color} animate-pulse">
                             ${item.amino}
                         </div>
-                        ${index < selectedAminos.length - 1 ? '<div class="w-4 h-0.5 bg-slate-300 mx-1"></div>' : ''}
+                        ${index < selectedAminos.length - 1 ? '<div class="w-4 h-0.5 bg-slate-400 mx-1"></div>' : ''}
                     </div>
                 `;
             });
             
             if (selectedAminos.length === 0) {
-                chain.innerHTML = '<p id="amino-placeholder" class="text-xs text-slate-400 italic w-full">우측 암호표를 참조하여 각 코돈에 맞는 아미노산을 선택하세요.</p>';
+                chain.innerHTML = '<p id="amino-placeholder" class="text-xs text-slate-400 italic w-full">우측 암호표를 참조하여 각 코돈에 맞는 아미노산을 추가하세요.</p>';
             }
         }
 
@@ -704,9 +786,14 @@
 
             if (isCorrect) {
                 msg.classList.add('bg-emerald-100', 'text-emerald-700');
-                msg.innerHTML = '<i class="fa-solid fa-party-horn"></i> 완벽합니다! 유전 정보가 단백질로 무사히 번역되었습니다. 마지막 정리 탭으로 이동하세요.';
+                msg.innerHTML = '<i class="fa-solid fa-party-horn"></i> 완벽합니다! 잠시 후 4단계 형성평가로 이동합니다.';
                 document.getElementById('protein-status-tag').textContent = "번역 완료";
                 document.getElementById('protein-status-tag').className = "text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-bold";
+                
+                // 1.5초 후 4단계 자동 이동
+                setTimeout(() => {
+                    switchTab('summary');
+                }, 1500);
             } else {
                 msg.classList.add('bg-rose-100', 'text-rose-700');
                 msg.textContent = '아미노산 연결 순서가 틀렸습니다. 코돈 순서에 맞게 다시 확인해보세요.';
@@ -719,7 +806,7 @@
             const q2 = document.querySelector('input[name="q2"]:checked');
             const result = document.getElementById('quiz-result');
             
-            result.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-700', 'bg-rose-100', 'text-rose-700');
+            result.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-700', 'bg-rose-100', 'text-rose-700', 'bg-amber-100', 'text-amber-700');
             
             if (!q1 || !q2) {
                 result.classList.add('bg-amber-100', 'text-amber-700');
@@ -729,14 +816,14 @@
 
             let score = 0;
             if (q1.value === "2") score += 50; // TAC -> AUG
-            if (q2.value === "2") score += 50; // mRNA
+            if (q2.value === "3") score += 50; // 번역
             
             if (score === 100) {
                 result.classList.add('bg-emerald-100', 'text-emerald-700');
-                result.innerHTML = `💯 100점입니다! 중심 원리(Central Dogma)를 완벽하게 이해했습니다.`;
+                result.innerHTML = `💯 정답입니다! 유전자 발현의 중심 원리를 완벽하게 이해하셨습니다.`;
             } else {
                 result.classList.add('bg-rose-100', 'text-rose-700');
-                result.innerHTML = `점수: ${score}점. 틀린 부분을 다시 한번 복습해 보세요! (Q1: 5'-AUG-3', Q2: mRNA)`;
+                result.innerHTML = `점수: ${score}점. 틀린 부분을 다시 한번 복습해 보세요! (정답: Q1=5'-AUG-3', Q2=번역)`;
             }
         }
 

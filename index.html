@@ -8,32 +8,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #f8fafc;
-        }
-        .base-badge { transition: all 0.2s ease; }
-        .base-badge:hover { transform: scale(1.08); }
-        .codon-box { animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; }
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        
-        /* 토스트 메시지 애니메이션 */
-        .toast-enter { animation: slideIn 0.3s ease-out forwards; }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translate(-50%, 20px); }
-            to { opacity: 1; transform: translate(-50%, 0); }
-        }
+        .codon-box { animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
     </style>
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col justify-between">
 
+    <!-- Header -->
     <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-3">
                 <div class="bg-indigo-600 p-2 rounded-xl text-white">
                     <i class="fa-solid fa-dna text-2xl animate-pulse"></i>
@@ -44,7 +32,6 @@
                 </div>
             </div>
 
-            <!-- Student Info Input Panel -->
             <div class="flex items-center gap-2 bg-indigo-950/60 p-1.5 px-3 rounded-lg border border-indigo-700/50 text-sm">
                 <div class="flex items-center gap-1.5">
                     <i class="fa-solid fa-users text-indigo-400"></i>
@@ -57,715 +44,345 @@
             </div>
         </div>
 
+        <!-- Navigation Tabs -->
         <nav class="bg-indigo-800 text-indigo-100 border-t border-indigo-700">
-            <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto text-sm font-medium hide-scrollbar">
-                <button onclick="switchTab('intro')" id="tab-btn-intro" class="tab-btn active border-b-4 border-amber-400 text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap transition">
-                    <span class="bg-amber-500 text-slate-900 rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center">1</span>
-                    도입: 방탈출 (코드)
+            <div class="max-w-6xl mx-auto px-4 flex overflow-x-auto text-sm font-medium">
+                <button onclick="switchTab('intro')" id="tab-btn-intro" class="tab-btn active border-b-4 border-amber-400 text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap">
+                    <span class="bg-amber-500 text-slate-900 rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center">1</span> 도입: 방탈출
                 </button>
-                <button onclick="switchTab('transcription')" id="tab-btn-transcription" class="tab-btn border-b-4 border-transparent hover:text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap transition">
-                    <span class="bg-emerald-500 text-white rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center">2</span>
-                    탐색: 전사 (DNA→mRNA)
+                <button onclick="switchTab('transcription')" id="tab-btn-transcription" class="tab-btn border-b-4 border-transparent hover:text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap disabled-tab">
+                    <span class="bg-emerald-500 text-white rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center">2</span> 전사 과정
                 </button>
-                <button onclick="switchTab('translation')" id="tab-btn-translation" class="tab-btn border-b-4 border-transparent hover:text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap transition">
-                    <span class="bg-sky-500 text-white rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center">3</span>
-                    적용: 번역 (코돈 해독)
+                <button onclick="switchTab('translation')" id="tab-btn-translation" class="tab-btn border-b-4 border-transparent hover:text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap disabled-tab">
+                    <span class="bg-sky-500 text-white rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center">3</span> 번역 과정
                 </button>
-                <button onclick="switchTab('summary')" id="tab-btn-summary" class="tab-btn border-b-4 border-transparent hover:text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap transition">
-                    <span class="bg-rose-500 text-white rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center">4</span>
-                    정리 및 제출
+                <button onclick="switchTab('summary')" id="tab-btn-summary" class="tab-btn border-b-4 border-transparent hover:text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap disabled-tab">
+                    <span class="bg-rose-500 text-white rounded-full text-xs font-bold w-5 h-5 flex items-center justify-center">4</span> 형성평가
                 </button>
-                <!-- 새로 추가된 교사용 대시보드 탭 -->
-                <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="tab-btn ml-auto border-b-4 border-transparent hover:text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap transition bg-indigo-900/50">
-                    <i class="fa-solid fa-chalkboard-user text-purple-400"></i>
-                    교사용 대시보드
+                <div class="flex-grow"></div>
+                <button onclick="switchTab('dashboard')" id="tab-btn-dashboard" class="tab-btn border-b-4 border-transparent hover:text-white py-3 px-4 flex items-center gap-2 whitespace-nowrap text-indigo-300">
+                    <i class="fa-solid fa-chalkboard-user"></i> 교사용 대시보드
                 </button>
             </div>
         </nav>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full relative">
-        
-        <section id="tab-intro" class="tab-content block space-y-6">
+    <main class="max-w-6xl mx-auto px-4 py-6 flex-grow w-full">
+        <!-- ================= TAB 1: INTRO ================= -->
+        <section id="tab-intro" class="tab-content active space-y-6">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
-                    <div class="bg-amber-100 text-amber-700 p-2.5 rounded-xl">
-                        <i class="fa-solid fa-key text-xl"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-800">1단계 도입: 온라인 쇼핑몰 비밀 주문코드 방탈출</h2>
-                        <p class="text-sm text-slate-500">유전 암호의 원리를 적용하여 상품 주문 코드를 해독하고 비밀번호를 찾아 탈출하세요!</p>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="md:col-span-2 space-y-4">
-                        <div class="bg-slate-900 text-slate-100 p-5 rounded-xl shadow-inner relative overflow-hidden">
-                            <div class="absolute right-3 top-3 opacity-10 text-6xl"><i class="fa-solid fa-lock"></i></div>
-                            <span class="bg-amber-500 text-slate-900 text-xs font-bold px-2.5 py-1 rounded-full uppercase">미션 상황</span>
-                            <h3 class="text-lg font-bold mt-2 text-amber-300">쇼핑몰 시스템 기밀 해독</h3>
-                            <p class="text-sm text-slate-300 mt-1 leading-relaxed">
-                                온라인 쇼핑몰 주문 서버가 잠겼습니다! 암호화된 주문 코드 <span class="bg-slate-800 text-amber-400 font-mono px-2 py-0.5 rounded border border-amber-500/30 font-bold">A12-B07-C31</span>을 아래 [상품 코드 변환 암호표]를 이용하여 연속된 알파벳 단어로 해독하고 비밀번호를 입력하세요.
-                            </p>
-                            <div class="mt-4 pt-4 border-t border-slate-800 flex flex-wrap gap-4 text-xs font-mono">
-                                <div><span class="text-slate-400">암호 1:</span> <span class="text-emerald-400 font-bold">A12</span></div>
-                                <div><span class="text-slate-400">암호 2:</span> <span class="text-sky-400 font-bold">B07</span></div>
-                                <div><span class="text-slate-400">암호 3:</span> <span class="text-rose-400 font-bold">C31</span></div>
-                            </div>
-                        </div>
-
-                        <div class="bg-amber-50 border border-amber-200 rounded-xl p-5">
-                            <h4 class="text-sm font-bold text-amber-900 mb-3 flex items-center gap-2">
-                                <i class="fa-solid fa-unlock-keyhole"></i> 방탈출 암호 해독 정답 입력
-                            </h4>
-                            <div class="flex flex-col sm:flex-row gap-3">
-                                <input type="text" id="escape-input" placeholder="3글자 영단어 입력 (예: CAT)" class="flex-grow px-4 py-2.5 rounded-lg border border-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-500 uppercase font-bold text-slate-800 tracking-widest">
-                                <button onclick="checkEscapeCode()" class="bg-amber-600 hover:bg-amber-700 text-white font-bold px-6 py-2.5 rounded-lg shadow transition flex items-center justify-center gap-2">
-                                    <i class="fa-solid fa-door-open"></i> 암호 해독
-                                </button>
-                            </div>
-                            <p id="escape-result" class="mt-3 text-sm font-semibold hidden"></p>
-                        </div>
-                    </div>
-
-                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col justify-between">
-                        <div>
-                            <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center justify-between">
-                                <span>상품 코드 변환 암호표</span>
-                                <i class="fa-solid fa-table"></i>
-                            </h4>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-xs text-center border-collapse bg-white">
-                                    <thead>
-                                        <tr class="bg-slate-200 text-slate-700">
-                                            <th class="p-1.5 border border-slate-300">구분</th>
-                                            <th class="p-1.5 border border-slate-300">코드 번호</th>
-                                            <th class="p-1.5 border border-slate-300">해독 문자</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-slate-200 font-mono text-slate-600">
-                                        <tr class="hover:bg-amber-50">
-                                            <td class="p-1.5 border border-slate-200 font-bold text-emerald-600">A 그룹</td>
-                                            <td class="p-1.5 border border-slate-200">A12</td>
-                                            <td class="p-1.5 border border-slate-200 font-bold text-slate-900">D</td>
-                                        </tr>
-                                        <tr class="hover:bg-amber-50">
-                                            <td class="p-1.5 border border-slate-200 font-bold text-emerald-600">A 그룹</td>
-                                            <td class="p-1.5 border border-slate-200">A05</td>
-                                            <td class="p-1.5 border border-slate-200 font-bold text-slate-900">G</td>
-                                        </tr>
-                                        <tr class="hover:bg-amber-50">
-                                            <td class="p-1.5 border border-slate-200 font-bold text-sky-600">B 그룹</td>
-                                            <td class="p-1.5 border border-slate-200">B07</td>
-                                            <td class="p-1.5 border border-slate-200 font-bold text-slate-900">N</td>
-                                        </tr>
-                                        <tr class="hover:bg-amber-50">
-                                            <td class="p-1.5 border border-slate-200 font-bold text-sky-600">B 그룹</td>
-                                            <td class="p-1.5 border border-slate-200">B15</td>
-                                            <td class="p-1.5 border border-slate-200 font-bold text-slate-900">E</td>
-                                        </tr>
-                                        <tr class="hover:bg-amber-50">
-                                            <td class="p-1.5 border border-slate-200 font-bold text-rose-600">C 그룹</td>
-                                            <td class="p-1.5 border border-slate-200">C31</td>
-                                            <td class="p-1.5 border border-slate-200 font-bold text-slate-900">A</td>
-                                        </tr>
-                                        <tr class="hover:bg-amber-50">
-                                            <td class="p-1.5 border border-slate-200 font-bold text-rose-600">C 그룹</td>
-                                            <td class="p-1.5 border border-slate-200">C09</td>
-                                            <td class="p-1.5 border border-slate-200 font-bold text-slate-900">T</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="mt-4 p-2.5 bg-indigo-50 border border-indigo-100 rounded-lg text-xs text-indigo-800">
-                            <i class="fa-solid fa-lightbulb text-indigo-500 mr-1"></i> <strong>배움의 연결:</strong> 암호 코드가 특정 정보를 지정하듯, DNA의 염기 3개 조합(코돈)은 단백질을 만드는 특정 아미노산을 지정합니다!
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-transcription" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4 flex-wrap gap-2">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-emerald-100 text-emerald-700 p-2.5 rounded-xl">
-                            <i class="fa-solid fa-code-fork text-xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-800">2단계 탐색: DNA → mRNA 전사(Transcription) 시뮬레이터</h2>
-                            <p class="text-sm text-slate-500">교사가 제시한 DNA 주형 가닥에 염기 상보성 규칙을 적용하여 mRNA를 합성해보세요.</p>
-                        </div>
-                    </div>
-                    <button onclick="resetTranscription()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium px-3 py-1.5 rounded-lg border border-slate-300 transition flex items-center gap-1">
-                        <i class="fa-solid fa-rotate-right"></i> 다시 하기
-                    </button>
-                </div>
-
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-                    <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-center">
-                        <span class="text-xs text-slate-500 block">DNA 염기 <strong class="text-rose-600">A (아데닌)</strong></span>
-                        <i class="fa-solid fa-arrow-down text-slate-300 my-1"></i>
-                        <span class="text-sm font-bold text-purple-700 block">RNA <span class="bg-purple-100 px-2 py-0.5 rounded">U (우라실)</span></span>
-                    </div>
-                    <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-center">
-                        <span class="text-xs text-slate-500 block">DNA 염기 <strong class="text-amber-600">T (티민)</strong></span>
-                        <i class="fa-solid fa-arrow-down text-slate-300 my-1"></i>
-                        <span class="text-sm font-bold text-rose-700 block">RNA <span class="bg-rose-100 px-2 py-0.5 rounded">A (아데닌)</span></span>
-                    </div>
-                    <div class="p-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-center">
-                        <span class="text-xs text-slate-500 block">DNA 염기 <strong class="text-emerald-600">G (구아닌)</strong></span>
-                        <i class="fa-solid fa-arrow-down text-slate-300 my-1"></i>
-                        <span class="text-sm font-bold text-sky-700 block">RNA <span class="bg-sky-100 px-2 py-0.5 rounded">C (시토신)</span></span>
-                    </div>
-                    <div class="p-2.5 bg-sky-50 border border-sky-200 rounded-xl text-center">
-                        <span class="text-xs text-slate-500 block">DNA 염기 <strong class="text-sky-600">C (시토신)</strong></span>
-                        <i class="fa-solid fa-arrow-down text-slate-300 my-1"></i>
-                        <span class="text-sm font-bold text-emerald-700 block">RNA <span class="bg-emerald-100 px-2 py-0.5 rounded">G (구아닌)</span></span>
-                    </div>
-                </div>
-
-                <div class="bg-slate-900 rounded-2xl p-6 text-white shadow-xl space-y-6">
-                    <div>
-                        <div class="flex items-center justify-between text-xs text-slate-400 font-mono mb-2">
-                            <span>DNA 주형 가닥 (3' → 5')</span>
-                            <span class="text-emerald-400">교사 제시 염기 서열</span>
-                        </div>
-                        <div id="dna-strand-container" class="flex flex-wrap gap-2 p-3 bg-slate-800/80 rounded-xl border border-slate-700 font-mono text-lg font-bold min-h-[64px]">
-                            <!-- JS Injection -->
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="flex items-center justify-between text-xs text-slate-400 font-mono mb-2">
-                            <span>합성 중인 mRNA 가닥 (5' → 3')</span>
-                            <span id="transcription-progress" class="text-amber-400">진행률: 0 / 9</span>
-                        </div>
-                        <div id="mrna-strand-container" class="flex flex-wrap gap-2 p-3 bg-slate-950 rounded-xl border border-indigo-900/60 font-mono text-lg font-bold min-h-[64px] items-center">
-                            <!-- JS Injection -->
-                        </div>
-                    </div>
-
-                    <div class="pt-2 border-t border-slate-800">
-                        <label class="block text-xs font-medium text-slate-300 mb-2">다음 상보적 RNA 염기를 클릭하여 선택하세요:</label>
-                        <div class="flex flex-wrap gap-3">
-                            <button onclick="addMRNABase('A')" class="flex-1 py-3 bg-rose-600 hover:bg-rose-500 text-white font-mono font-bold text-xl rounded-xl shadow-lg transition active:scale-95">A</button>
-                            <button onclick="addMRNABase('U')" class="flex-1 py-3 bg-purple-600 hover:bg-purple-500 text-white font-mono font-bold text-xl rounded-xl shadow-lg transition active:scale-95">U</button>
-                            <button onclick="addMRNABase('G')" class="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-bold text-xl rounded-xl shadow-lg transition active:scale-95">G</button>
-                            <button onclick="addMRNABase('C')" class="flex-1 py-3 bg-sky-600 hover:bg-sky-500 text-white font-mono font-bold text-xl rounded-xl shadow-lg transition active:scale-95">C</button>
-                            <button onclick="popMRNABase()" class="px-4 py-3 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl transition font-medium text-sm flex items-center gap-1">
-                                <i class="fa-solid fa-delete-left"></i> 지우기
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div id="transcription-feedback" class="mt-4 p-4 rounded-xl border hidden text-center font-bold"></div>
-            </div>
-        </section>
-
-        <section id="tab-translation" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4 flex-wrap gap-2">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-sky-100 text-sky-700 p-2.5 rounded-xl">
-                            <i class="fa-solid fa-cubes text-xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-800">3단계 적용: 코돈 해독과 단백질 번역(Translation)</h2>
-                            <p class="text-sm text-slate-500">앞서 합성한 mRNA의 코돈(3개 염기)을 유전암호표에서 찾아 아미노산 서열로 번역하세요.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <!-- 유전 암호표 -->
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <h3 class="font-bold text-sm text-slate-700 mb-3 flex items-center gap-2"><i class="fa-solid fa-table-cells"></i> 간이 유전 암호표</h3>
-                        <table class="w-full text-xs text-center border-collapse bg-white shadow-sm">
-                            <thead>
-                                <tr class="bg-slate-800 text-white">
-                                    <th class="p-2 border border-slate-700">코돈</th>
-                                    <th class="p-2 border border-slate-700">아미노산</th>
-                                    <th class="p-2 border border-slate-700">코돈</th>
-                                    <th class="p-2 border border-slate-700">아미노산</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-slate-700">
-                                <tr>
-                                    <td class="p-2 border border-slate-300 font-mono">AUG</td>
-                                    <td class="p-2 border border-slate-300 font-bold text-emerald-600">메싸이오닌 (Met)</td>
-                                    <td class="p-2 border border-slate-300 font-mono">UUU, UUC</td>
-                                    <td class="p-2 border border-slate-300">페닐알라닌 (Phe)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border border-slate-300 font-mono">GCC, GCU</td>
-                                    <td class="p-2 border border-slate-300 font-bold text-blue-600">알라닌 (Ala)</td>
-                                    <td class="p-2 border border-slate-300 font-mono">GUA, GUG</td>
-                                    <td class="p-2 border border-slate-300">발린 (Val)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border border-slate-300 font-mono">CGC, CGG</td>
-                                    <td class="p-2 border border-slate-300 font-bold text-purple-600">아르지닌 (Arg)</td>
-                                    <td class="p-2 border border-slate-300 font-mono">UAA, UAG, UGA</td>
-                                    <td class="p-2 border border-slate-300 text-rose-500 font-bold">종결 (Stop)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- 번역 실습 영역 -->
-                    <div class="space-y-4">
-                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
-                            <h3 class="font-bold text-sm text-indigo-900 mb-2">완성된 mRNA 서열</h3>
-                            <div id="completed-mrna" class="font-mono text-lg font-bold text-indigo-700 bg-white p-3 rounded-lg shadow-inner border border-indigo-200 tracking-[0.2em] text-center">
-                                (전사 단계를 먼저 완료해주세요)
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                            <h3 class="font-bold text-sm text-slate-700 mb-3">코돈별 아미노산 선택</h3>
-                            <div class="space-y-3" id="translation-inputs">
-                                <div class="flex items-center gap-3 text-sm text-slate-500 text-center justify-center py-4">
-                                    먼저 전사 시뮬레이션을 끝내면 코돈 입력란이 나타납니다.
-                                </div>
-                            </div>
-                            <button onclick="checkTranslation()" class="mt-4 w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2.5 rounded-lg shadow transition">
-                                번역 결과 확인하기
-                            </button>
-                            <p id="translation-result" class="mt-3 text-sm font-semibold text-center hidden"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="tab-summary" class="tab-content hidden space-y-6">
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 max-w-3xl mx-auto">
-                <div class="text-center mb-8">
-                    <div class="inline-block bg-rose-100 text-rose-700 p-4 rounded-full mb-4">
-                        <i class="fa-solid fa-flag-checkered text-3xl"></i>
-                    </div>
-                    <h2 class="text-2xl font-bold text-slate-800">탐구 완료 및 결과 제출</h2>
-                    <p class="text-slate-500 mt-2">모든 미션을 완료했다면 선생님께 결과를 제출하세요.</p>
-                </div>
-
-                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
-                    <h3 class="font-bold text-slate-700 mb-4 border-b pb-2">나의 수행 결과 요약</h3>
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex justify-between items-center">
-                            <span class="text-slate-600">1단계 방탈출 (비밀번호: DNA)</span>
-                            <span id="summary-escape" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-500">미완료</span>
-                        </li>
-                        <li class="flex justify-between items-center">
-                            <span class="text-slate-600">2단계 전사 (DNA → mRNA)</span>
-                            <span id="summary-transcription" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-500">미완료</span>
-                        </li>
-                        <li class="flex justify-between items-center">
-                            <span class="text-slate-600">3단계 번역 (mRNA → 단백질)</span>
-                            <span id="summary-translation" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-500">미완료</span>
-                        </li>
+                <h2 class="text-xl font-bold text-slate-800 mb-4">1단계: 비밀 주문코드 방탈출</h2>
+                <div class="bg-slate-900 text-slate-100 p-5 rounded-xl mb-4">
+                    <p class="mb-2">암호화된 코드 <span class="text-amber-400 font-bold">A12-B07-C31</span>을 해독하세요.</p>
+                    <ul class="text-sm space-y-1">
+                        <li>A12 = D</li>
+                        <li>B07 = N</li>
+                        <li>C31 = A</li>
                     </ul>
                 </div>
-
-                <button onclick="submitStudentData()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-lg transition text-lg flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-paper-plane"></i> 선생님께 제출하기
-                </button>
+                <div class="flex gap-3">
+                    <input type="text" id="escape-input" placeholder="정답 입력 (3글자)" class="px-4 py-2 border rounded-lg uppercase">
+                    <button onclick="checkEscapeCode()" class="bg-amber-600 text-white px-6 py-2 rounded-lg font-bold">확인</button>
+                </div>
             </div>
         </section>
 
-        <section id="tab-dashboard" class="tab-content hidden space-y-6">
+        <!-- ================= TAB 2: TRANSCRIPTION ================= -->
+        <section id="tab-transcription" class="tab-content space-y-6">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6 flex-wrap gap-4">
-                    <div class="flex items-center gap-3">
-                        <div class="bg-purple-100 text-purple-700 p-2.5 rounded-xl">
-                            <i class="fa-solid fa-chalkboard-user text-xl"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-xl font-bold text-slate-800">교사용 대시보드</h2>
-                            <p class="text-sm text-slate-500">학생들의 미션 수행 및 제출 현황을 실시간으로 확인합니다.</p>
+                <h2 class="text-xl font-bold text-slate-800 mb-4">2단계: DNA → mRNA 전사</h2>
+                <div class="bg-slate-900 p-6 rounded-2xl text-white space-y-4">
+                    <div>
+                        <p class="text-sm text-slate-400 mb-2">DNA 주형 가닥 (3' → 5')</p>
+                        <div id="dna-strand" class="flex gap-2 text-xl font-mono font-bold tracking-widest text-emerald-400">
+                            T A C G G A C T C G T T A T C
                         </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="renderDashboard()" class="text-sm bg-purple-600 hover:bg-purple-700 text-white font-medium px-4 py-2 rounded-lg shadow transition flex items-center gap-2">
-                            <i class="fa-solid fa-arrows-rotate"></i> 데이터 새로고침
-                        </button>
-                        <button onclick="clearDashboardData()" class="text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium px-4 py-2 rounded-lg transition flex items-center gap-2">
-                            <i class="fa-regular fa-trash-can"></i> 데이터 초기화
-                        </button>
+                    <div>
+                        <p class="text-sm text-slate-400 mb-2">합성 중인 mRNA (5' → 3') <span id="rna-progress" class="text-amber-400 text-xs ml-2">0/15</span></p>
+                        <div id="mrna-strand" class="flex gap-2 text-xl font-mono font-bold tracking-widest text-sky-400 min-h-[30px]"></div>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="addRNA('A')" class="flex-1 py-2 bg-rose-600 rounded font-bold">A</button>
+                        <button onclick="addRNA('U')" class="flex-1 py-2 bg-purple-600 rounded font-bold">U</button>
+                        <button onclick="addRNA('G')" class="flex-1 py-2 bg-emerald-600 rounded font-bold">G</button>
+                        <button onclick="addRNA('C')" class="flex-1 py-2 bg-sky-600 rounded font-bold">C</button>
+                        <button onclick="removeRNA()" class="px-4 bg-slate-700 rounded text-sm">지우기</button>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-                    <table class="w-full text-sm text-left">
-                        <thead class="bg-slate-100 text-slate-700 font-bold">
+        <!-- ================= TAB 3: TRANSLATION ================= -->
+        <section id="tab-translation" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-slate-800 mb-4">3단계: 단백질 번역</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="space-y-4">
+                        <div class="bg-slate-900 p-4 rounded-xl text-white">
+                            <p class="text-sm text-slate-400 mb-2">생성된 mRNA 코돈</p>
+                            <div id="codon-display" class="flex gap-3 text-lg font-mono font-bold text-sky-400"></div>
+                        </div>
+                        <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
+                            <p class="text-sm font-bold text-indigo-900 mb-2">선택한 아미노산 서열 (단백질)</p>
+                            <div id="protein-display" class="flex flex-wrap gap-2 min-h-[40px]"></div>
+                            <div class="mt-4 flex gap-2">
+                                <button onclick="removeAminoAcid()" class="px-3 py-1.5 bg-slate-200 text-slate-700 rounded text-sm">최근 선택 취소</button>
+                                <button onclick="checkTranslation()" class="flex-1 bg-sky-600 text-white rounded font-bold py-1.5">번역 완료 검증</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 p-4 rounded-xl border max-h-[400px] overflow-y-auto">
+                        <h3 class="font-bold text-sm mb-2 text-slate-800">전체 코돈표 (클릭하여 추가)</h3>
+                        <div id="codon-table-container" class="grid grid-cols-2 gap-1 text-xs">
+                            <!-- JS injected -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 4: SUMMARY ================= -->
+        <section id="tab-summary" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold text-slate-800 mb-4">4단계: 형성평가</h2>
+                <div class="space-y-6">
+                    <div class="bg-slate-50 p-4 rounded-xl border">
+                        <p class="font-bold text-sm mb-3">Q1. 전사(Transcription)가 일어나는 장소는 어디인가요?</p>
+                        <select id="q1-answer" class="w-full p-2 border rounded">
+                            <option value="">선택하세요</option>
+                            <option value="핵">핵</option>
+                            <option value="리보솜">리보솜</option>
+                            <option value="골지체">골지체</option>
+                        </select>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border">
+                        <p class="font-bold text-sm mb-3">Q2. 번역 과정에서 시작 코돈(AUG)이 지정하는 아미노산은 무엇인가요?</p>
+                        <input type="text" id="q2-answer" placeholder="아미노산 이름 입력" class="w-full p-2 border rounded">
+                    </div>
+                    <button onclick="submitAssessment()" class="w-full bg-rose-600 text-white font-bold py-3 rounded-xl">최종 제출하기</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= TAB 5: DASHBOARD ================= -->
+        <section id="tab-dashboard" class="tab-content space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-indigo-200">
+                <h2 class="text-xl font-bold text-indigo-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-line"></i> 교사용 학생 제출 현황
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left border-collapse">
+                        <thead class="bg-indigo-50 text-indigo-900 border-b-2 border-indigo-200">
                             <tr>
-                                <th class="px-4 py-3 border-b">모둠명</th>
-                                <th class="px-4 py-3 border-b">이름</th>
-                                <th class="px-4 py-3 border-b text-center">1단계 (방탈출)</th>
-                                <th class="px-4 py-3 border-b text-center">2단계 (전사)</th>
-                                <th class="px-4 py-3 border-b text-center">3단계 (번역)</th>
-                                <th class="px-4 py-3 border-b">제출 시간</th>
+                                <th class="p-3">제출 시간</th>
+                                <th class="p-3">모둠</th>
+                                <th class="p-3">이름</th>
+                                <th class="p-3">Q1 (장소)</th>
+                                <th class="p-3">Q2 (시작코돈)</th>
                             </tr>
                         </thead>
-                        <tbody id="dashboard-table-body" class="divide-y divide-slate-100 bg-white">
-                            <!-- JS Injection -->
+                        <tbody id="dashboard-tbody" class="divide-y divide-slate-200">
+                            <tr><td colspan="5" class="p-4 text-center text-slate-500">아직 제출된 데이터가 없습니다.</td></tr>
                         </tbody>
                     </table>
                 </div>
-                
-                <div class="mt-4 flex items-start gap-2 p-3 bg-blue-50 text-blue-800 text-xs rounded-lg border border-blue-100">
-                    <i class="fa-solid fa-circle-info mt-0.5"></i>
-                    <div>
-                        <p><strong>안내:</strong> 현재 버전은 단일 브라우저 세션(In-Memory) 기반으로 작동합니다. 다른 탭이나 창에서 제출한 내용은 브라우저 메모리를 공유하지 않으면 보이지 않을 수 있습니다. 
-                        실제 교실 환경 적용을 위해서는 영구 저장소(예: Firebase Firestore 등) 연동 기능 확장이 필요합니다.</p>
-                    </div>
-                </div>
             </div>
         </section>
-
-        <!-- Toast Notification Area -->
-        <div id="toast-container" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2"></div>
     </main>
 
     <script>
-        // --- 데이터 상태 관리 ---
-        const targetDNA = "TACCGTCGC"; // 3개의 코돈 (9 염기)
-        const targetMRNA = "AUGGCAGCG"; // A-U, T-A, C-G, G-C
-        const targetAminoAcids = ["Met", "Ala", "Arg"]; // 메싸이오닌, 알라닌, 아르지닌
-        
-        let currentMRNA = "";
-        let studentStatus = {
-            escape: false,
-            transcription: false,
-            translation: false
+        // --- State Variables ---
+        const targetDNA = ['T','A','C','G','G','A','C','T','C','G','T','T','A','T','C'];
+        const correctRNA = ['A','U','G','C','C','U','G','A','G','C','A','A','U','A','G'];
+        const correctProtein = ['Met (시작)', 'Pro', 'Glu', 'Gln', 'Stop (종결)'];
+        let currentRNA = [];
+        let currentProtein = [];
+        let submissions = [];
+
+        // 64 Codon Dictionary
+        const codonDict = {
+            'UUU':'Phe', 'UUC':'Phe', 'UUA':'Leu', 'UUG':'Leu',
+            'CUU':'Leu', 'CUC':'Leu', 'CUA':'Leu', 'CUG':'Leu',
+            'AUU':'Ile', 'AUC':'Ile', 'AUA':'Ile', 'AUG':'Met (시작)',
+            'GUU':'Val', 'GUC':'Val', 'GUA':'Val', 'GUG':'Val',
+            'UCU':'Ser', 'UCC':'Ser', 'UCA':'Ser', 'UCG':'Ser',
+            'CCU':'Pro', 'CCC':'Pro', 'CCA':'Pro', 'CCG':'Pro',
+            'ACU':'Thr', 'ACC':'Thr', 'ACA':'Thr', 'ACG':'Thr',
+            'GCU':'Ala', 'GCC':'Ala', 'GCA':'Ala', 'GCG':'Ala',
+            'UAU':'Tyr', 'UAC':'Tyr', 'UAA':'Stop (종결)', 'UAG':'Stop (종결)',
+            'CAU':'His', 'CAC':'His', 'CAA':'Gln', 'CAG':'Gln',
+            'AAU':'Asn', 'AAC':'Asn', 'AAA':'Lys', 'AAG':'Lys',
+            'GAU':'Asp', 'GAC':'Asp', 'GAA':'Glu', 'GAG':'Glu',
+            'UGU':'Cys', 'UGC':'Cys', 'UGA':'Stop (종결)', 'UGG':'Trp',
+            'CGU':'Arg', 'CGC':'Arg', 'CGA':'Arg', 'CGG':'Arg',
+            'AGU':'Ser', 'AGC':'Ser', 'AGA':'Arg', 'AGG':'Arg',
+            'GGU':'Gly', 'GGC':'Gly', 'GGA':'Gly', 'GGG':'Gly'
         };
 
-        // 교사용 대시보드 저장소 (인메모리 배열)
-        // 시연을 위해 더미 데이터 1개 추가
-        let submissionsData = [
-            {
-                group: "예시모둠",
-                name: "김철수",
-                escape: true,
-                transcription: true,
-                translation: true,
-                time: new Date().toLocaleTimeString('ko-KR')
+        // Initialize Codon Table UI
+        function initCodonTable() {
+            const container = document.getElementById('codon-table-container');
+            for(let [codon, aa] of Object.entries(codonDict)) {
+                let btnClass = "p-1.5 border rounded cursor-pointer hover:bg-sky-100 flex justify-between items-center bg-white";
+                if(aa.includes('시작')) btnClass = "p-1.5 border rounded cursor-pointer hover:bg-emerald-200 bg-emerald-50 flex justify-between";
+                if(aa.includes('종결')) btnClass = "p-1.5 border rounded cursor-pointer hover:bg-rose-200 bg-rose-50 flex justify-between";
+                
+                container.innerHTML += `
+                    <div class="${btnClass}" onclick="addAminoAcid('${aa}')">
+                        <span class="font-mono font-bold text-slate-700">${codon}</span>
+                        <span class="text-indigo-700 font-semibold">${aa}</span>
+                    </div>
+                `;
             }
-        ];
-
-        // --- 초기화 ---
-        window.onload = () => {
-            initTranscriptionUI();
-            updateSummaryUI();
-            renderDashboard();
-        };
-
-        // --- 커스텀 토스트 메시지 ---
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
-            const toast = document.createElement('div');
-            const bgColor = type === 'success' ? 'bg-emerald-600' : (type === 'error' ? 'bg-rose-600' : 'bg-indigo-600');
-            const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-circle-exclamation' : 'fa-info-circle');
-            
-            toast.className = `${bgColor} text-white px-5 py-3 rounded-xl shadow-lg flex items-center gap-3 text-sm font-bold toast-enter`;
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
-            
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translate(-50%, 20px)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
         }
+        initCodonTable();
 
-        // --- 탭 전환 로직 ---
+        // --- Tab Navigation ---
         function switchTab(tabId) {
-            // 모든 탭 숨기기
-            document.querySelectorAll('.tab-content').forEach(el => {
-                el.classList.add('hidden');
-                el.classList.remove('block');
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active', 'border-amber-400', 'text-white');
+                el.classList.add('border-transparent');
             });
-            // 모든 탭 버튼 비활성화 스타일
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active', 'border-amber-400', 'border-emerald-400', 'border-sky-400', 'border-rose-400', 'border-purple-400', 'text-white');
-                btn.classList.add('border-transparent');
-            });
-
-            // 대상 탭 보이기
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
-            document.getElementById(`tab-${tabId}`).classList.add('block');
-            
-            // 대상 버튼 활성화 스타일
-            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
-            activeBtn.classList.add('active', 'text-white');
-            activeBtn.classList.remove('border-transparent');
-
-            // 탭별 밑줄 색상
-            if(tabId === 'intro') activeBtn.classList.add('border-amber-400');
-            if(tabId === 'transcription') activeBtn.classList.add('border-emerald-400');
-            if(tabId === 'translation') activeBtn.classList.add('border-sky-400');
-            if(tabId === 'summary') {
-                activeBtn.classList.add('border-rose-400');
-                updateSummaryUI();
-            }
-            if(tabId === 'dashboard') {
-                activeBtn.classList.add('border-purple-400');
-                renderDashboard();
-            }
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            document.getElementById(`tab-btn-${tabId}`).classList.add('active', 'border-amber-400', 'text-white');
+            document.getElementById(`tab-btn-${tabId}`).classList.remove('border-transparent');
         }
 
-        // --- 1단계: 방탈출 로직 ---
+        // --- Step 1: Intro ---
         function checkEscapeCode() {
             const input = document.getElementById('escape-input').value.trim().toUpperCase();
-            const resultEl = document.getElementById('escape-result');
-            
-            if(input === 'DNA') {
-                resultEl.textContent = "정답입니다! 시스템 암호가 해제되었습니다.";
-                resultEl.className = "mt-3 text-sm font-semibold text-emerald-600 block";
-                studentStatus.escape = true;
-                showToast("방탈출 성공!");
+            if (input === 'DNA') {
+                alert('해독 성공! 2단계로 이동합니다.');
+                switchTab('transcription');
             } else {
-                resultEl.textContent = "암호가 틀렸습니다. 코드를 다시 확인하세요.";
-                resultEl.className = "mt-3 text-sm font-semibold text-rose-600 block";
-                studentStatus.escape = false;
+                alert('코드가 틀렸습니다. 다시 확인해보세요.');
             }
         }
 
-        // --- 2단계: 전사 로직 ---
-        function initTranscriptionUI() {
-            const dnaContainer = document.getElementById('dna-strand-container');
-            dnaContainer.innerHTML = '';
-            for(let i=0; i<targetDNA.length; i++) {
-                const span = document.createElement('span');
-                span.className = "px-2 py-1 rounded bg-slate-700 text-slate-300";
-                span.textContent = targetDNA[i];
-                dnaContainer.appendChild(span);
-            }
-            updateMRNAUI();
-        }
-
-        function addMRNABase(base) {
-            if(currentMRNA.length >= targetDNA.length) return;
-            
-            // 유효성 검사 (상보적 결합)
-            const index = currentMRNA.length;
-            const currentDNABase = targetDNA[index];
-            
-            let isCorrect = false;
-            if(currentDNABase === 'T' && base === 'A') isCorrect = true;
-            if(currentDNABase === 'A' && base === 'U') isCorrect = true;
-            if(currentDNABase === 'C' && base === 'G') isCorrect = true;
-            if(currentDNABase === 'G' && base === 'C') isCorrect = true;
-
-            if(isCorrect) {
-                currentMRNA += base;
-                updateMRNAUI();
+        // --- Step 2: Transcription ---
+        function addRNA(base) {
+            if (currentRNA.length < targetDNA.length) {
+                currentRNA.push(base);
+                updateRNADisplay();
                 
-                if(currentMRNA.length === targetDNA.length) {
-                    const feedback = document.getElementById('transcription-feedback');
-                    feedback.textContent = "전사 성공! mRNA 합성이 완료되었습니다.";
-                    feedback.className = "mt-4 p-4 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-700 text-center font-bold block";
-                    studentStatus.transcription = true;
-                    showToast("전사 과정 성공!");
-                    setupTranslationUI(); // 번역 단계 준비
+                if (currentRNA.length === targetDNA.length) {
+                    if (currentRNA.join('') === correctRNA.join('')) {
+                        setTimeout(() => {
+                            alert('전사 성공! mRNA 합성이 완료되었습니다. 3단계로 이동합니다.');
+                            renderCodonDisplay();
+                            switchTab('translation');
+                        }, 300);
+                    } else {
+                        alert('상보적 결합이 틀린 부분이 있습니다. 지우고 다시 시도하세요.');
+                    }
                 }
-            } else {
-                showToast("염기 상보성 규칙에 맞지 않습니다.", "error");
+            }
+        }
+        function removeRNA() {
+            currentRNA.pop();
+            updateRNADisplay();
+        }
+        function updateRNADisplay() {
+            document.getElementById('mrna-strand').innerText = currentRNA.join(' ');
+            document.getElementById('rna-progress').innerText = `${currentRNA.length}/${targetDNA.length}`;
+        }
+
+        // --- Step 3: Translation ---
+        function renderCodonDisplay() {
+            const container = document.getElementById('codon-display');
+            container.innerHTML = '';
+            for(let i=0; i<correctRNA.length; i+=3) {
+                const codon = correctRNA.slice(i, i+3).join('');
+                container.innerHTML += `<span class="bg-slate-800 px-2 py-1 rounded border border-slate-700">${codon}</span>`;
             }
         }
 
-        function popMRNABase() {
-            if(currentMRNA.length > 0) {
-                currentMRNA = currentMRNA.slice(0, -1);
-                studentStatus.transcription = false;
-                document.getElementById('transcription-feedback').classList.add('hidden');
-                updateMRNAUI();
+        function addAminoAcid(aa) {
+            if(currentProtein.length < correctProtein.length) {
+                currentProtein.push(aa);
+                updateProteinDisplay();
             }
         }
 
-        function updateMRNAUI() {
-            const mrnaContainer = document.getElementById('mrna-strand-container');
-            mrnaContainer.innerHTML = '';
-            
-            for(let i=0; i<currentMRNA.length; i++) {
-                const span = document.createElement('span');
-                let colorClass = "";
-                if(currentMRNA[i] === 'A') colorClass = "bg-rose-600";
-                if(currentMRNA[i] === 'U') colorClass = "bg-purple-600";
-                if(currentMRNA[i] === 'G') colorClass = "bg-emerald-600";
-                if(currentMRNA[i] === 'C') colorClass = "bg-sky-600";
+        function removeAminoAcid() {
+            currentProtein.pop();
+            updateProteinDisplay();
+        }
+
+        function updateProteinDisplay() {
+            const container = document.getElementById('protein-display');
+            container.innerHTML = currentProtein.map((aa, idx) => {
+                let color = "bg-white text-indigo-700";
+                if(aa.includes('시작')) color = "bg-emerald-100 text-emerald-800 border-emerald-300";
+                if(aa.includes('종결')) color = "bg-rose-100 text-rose-800 border-rose-300";
                 
-                span.className = `px-2 py-1 rounded text-white ${colorClass} codon-box`;
-                span.textContent = currentMRNA[i];
-                mrnaContainer.appendChild(span);
-            }
-            
-            document.getElementById('transcription-progress').textContent = `진행률: ${currentMRNA.length} / ${targetDNA.length}`;
-        }
-
-        function resetTranscription() {
-            currentMRNA = "";
-            studentStatus.transcription = false;
-            document.getElementById('transcription-feedback').classList.add('hidden');
-            updateMRNAUI();
-        }
-
-        // --- STREAMING_CHUNK:3단계: 번역 로직 ---
-        function setupTranslationUI() {
-            if(!studentStatus.transcription) return;
-            
-            const mrnaDisplay = document.getElementById('completed-mrna');
-            mrnaDisplay.innerHTML = '';
-            
-            // 코돈 단위(3개씩)로 잘라서 보여주기
-            const codons = [];
-            for(let i=0; i<currentMRNA.length; i+=3) {
-                codons.push(currentMRNA.substring(i, i+3));
-            }
-            
-            mrnaDisplay.textContent = codons.join(" - ");
-            
-            const inputContainer = document.getElementById('translation-inputs');
-            inputContainer.innerHTML = '';
-            
-            codons.forEach((codon, index) => {
-                const div = document.createElement('div');
-                div.className = "flex items-center gap-3";
-                div.innerHTML = `
-                    <span class="font-mono bg-slate-100 px-3 py-1.5 rounded border font-bold text-slate-700 w-16 text-center">${codon}</span>
-                    <i class="fa-solid fa-arrow-right text-slate-400"></i>
-                    <select id="codon-select-${index}" class="flex-grow p-2 rounded border border-slate-300 focus:outline-none focus:border-sky-500 text-sm">
-                        <option value="">아미노산 선택...</option>
-                        <option value="Met">메싸이오닌 (Met)</option>
-                        <option value="Ala">알라닌 (Ala)</option>
-                        <option value="Arg">아르지닌 (Arg)</option>
-                        <option value="Phe">페닐알라닌 (Phe)</option>
-                        <option value="Val">발린 (Val)</option>
-                        <option value="Stop">종결 (Stop)</option>
-                    </select>
-                `;
-                inputContainer.appendChild(div);
-            });
+                return `
+                <div class="flex items-center gap-1">
+                    <div class="px-3 py-1.5 rounded-full font-bold shadow-sm border ${color}">${aa}</div>
+                    ${idx < currentProtein.length -1 ? '<i class="fa-solid fa-minus text-slate-300"></i>' : ''}
+                </div>`;
+            }).join('');
         }
 
         function checkTranslation() {
-            if(!studentStatus.transcription) {
-                showToast("전사 단계를 먼저 완료해주세요.", "error");
+            if(currentProtein.length < correctProtein.length) {
+                alert('아직 번역이 완료되지 않았습니다.');
+                return;
+            }
+            if(currentProtein[0] !== 'Met (시작)') {
+                alert('단백질 합성은 항상 시작 코돈(AUG)이 지정하는 메티오닌(Met)으로 시작해야 합니다.');
+                return;
+            }
+            if(currentProtein[currentProtein.length-1] !== 'Stop (종결)') {
+                alert('마지막은 종결 코돈에 해당하는 신호로 끝나야 합니다.');
                 return;
             }
 
-            let isAllCorrect = true;
-            for(let i=0; i<targetAminoAcids.length; i++) {
-                const select = document.getElementById(`codon-select-${i}`);
-                if(!select || select.value !== targetAminoAcids[i]) {
-                    isAllCorrect = false;
-                    break;
-                }
+            let isCorrect = true;
+            for(let i=0; i<correctProtein.length; i++) {
+                if(currentProtein[i] !== correctProtein[i]) isCorrect = false;
             }
 
-            const resultEl = document.getElementById('translation-result');
-            if(isAllCorrect) {
-                resultEl.textContent = "정답입니다! 올바른 단백질(폴리펩타이드)이 합성되었습니다.";
-                resultEl.className = "mt-4 text-sm font-bold text-emerald-600 block text-center p-3 bg-emerald-50 rounded-lg border border-emerald-200";
-                studentStatus.translation = true;
-                showToast("번역 과정 성공!");
+            if(isCorrect) {
+                alert('번역 완벽합니다! 4단계로 이동합니다.');
+                switchTab('summary');
             } else {
-                resultEl.textContent = "틀린 부분이 있습니다. 코돈과 유전암호표를 다시 비교해보세요.";
-                resultEl.className = "mt-4 text-sm font-bold text-rose-600 block text-center p-3 bg-rose-50 rounded-lg border border-rose-200";
-                studentStatus.translation = false;
+                alert('코돈에 맞지 않는 아미노산이 있습니다. 다시 확인해보세요.');
             }
         }
 
-        // --- 4단계: 요약 및 제출 로직 ---
-        function updateSummaryUI() {
-            const setBadge = (id, status) => {
-                const el = document.getElementById(id);
-                if(status) {
-                    el.textContent = "완료";
-                    el.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700";
-                } else {
-                    el.textContent = "미완료";
-                    el.className = "px-2.5 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-500";
-                }
-            }
-            setBadge('summary-escape', studentStatus.escape);
-            setBadge('summary-transcription', studentStatus.transcription);
-            setBadge('summary-translation', studentStatus.translation);
-        }
+        // --- Step 4: Assessment & Dashboard ---
+        function submitAssessment() {
+            const group = document.getElementById('group-name').value || '미입력';
+            const name = document.getElementById('student-name').value || '미입력';
+            const q1 = document.getElementById('q1-answer').value || '-';
+            const q2 = document.getElementById('q2-answer').value || '-';
 
-        function submitStudentData() {
-            const groupName = document.getElementById('group-name').value.trim();
-            const studentName = document.getElementById('student-name').value.trim();
+            const now = new Date();
+            const timeStr = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
 
-            if(!groupName || !studentName) {
-                showToast("헤더에서 모둠명과 이름을 먼저 입력해주세요.", "error");
-                return;
-            }
-
-            // 인메모리 배열에 저장
-            const newSubmission = {
-                group: groupName,
-                name: studentName,
-                escape: studentStatus.escape,
-                transcription: studentStatus.transcription,
-                translation: studentStatus.translation,
-                time: new Date().toLocaleTimeString('ko-KR')
-            };
-
-            // 기존 동일 학생(이름 기준)이 있다면 업데이트, 아니면 추가 (간단한 로직)
-            const existingIdx = submissionsData.findIndex(s => s.name === studentName && s.group === groupName);
-            if(existingIdx >= 0) {
-                submissionsData[existingIdx] = newSubmission;
-            } else {
-                submissionsData.push(newSubmission);
-            }
-
-            showToast("선생님께 결과가 성공적으로 제출되었습니다!");
-            // 대시보드 강제 리렌더링
+            submissions.push({ time: timeStr, group, name, q1, q2 });
             renderDashboard();
+            
+            alert('제출이 완료되었습니다! 수고하셨습니다.');
         }
 
-        // --- STREAMING_CHUNK:5단계: 교사용 대시보드 로직 ---
         function renderDashboard() {
-            const tbody = document.getElementById('dashboard-table-body');
-            tbody.innerHTML = '';
-
-            if(submissionsData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-slate-500">아직 제출된 학생 데이터가 없습니다.</td></tr>`;
-                return;
-            }
-
-            // 최신 제출이 위로 오게 정렬
-            const sortedData = [...submissionsData].reverse();
-
-            sortedData.forEach(data => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-50 transition";
-                
-                const getStatusBadge = (status) => {
-                    return status 
-                        ? `<span class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-check"></i> 성공</span>`
-                        : `<span class="bg-rose-100 text-rose-700 px-2 py-1 rounded text-xs font-bold"><i class="fa-solid fa-xmark"></i> 미완료</span>`;
-                };
-
-                tr.innerHTML = `
-                    <td class="px-4 py-3 border-b font-medium">${data.group}</td>
-                    <td class="px-4 py-3 border-b font-medium text-indigo-700">${data.name}</td>
-                    <td class="px-4 py-3 border-b text-center">${getStatusBadge(data.escape)}</td>
-                    <td class="px-4 py-3 border-b text-center">${getStatusBadge(data.transcription)}</td>
-                    <td class="px-4 py-3 border-b text-center">${getStatusBadge(data.translation)}</td>
-                    <td class="px-4 py-3 border-b text-xs text-slate-500">${data.time}</td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function clearDashboardData() {
-            submissionsData = [];
-            renderDashboard();
-            showToast("대시보드 데이터가 초기화되었습니다.", "info");
+            const tbody = document.getElementById('dashboard-tbody');
+            if(submissions.length === 0) return;
+            
+            tbody.innerHTML = submissions.map(sub => `
+                <tr class="hover:bg-slate-50">
+                    <td class="p-3 border-b border-slate-100">${sub.time}</td>
+                    <td class="p-3 border-b border-slate-100 font-bold">${sub.group}</td>
+                    <td class="p-3 border-b border-slate-100">${sub.name}</td>
+                    <td class="p-3 border-b border-slate-100">${sub.q1}</td>
+                    <td class="p-3 border-b border-slate-100">${sub.q2}</td>
+                </tr>
+            `).join('');
         }
     </script>
 </body>

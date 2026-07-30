@@ -81,6 +81,7 @@
 
     <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full relative">
         
+        <!-- Tab 1: 도입 -->
         <section id="tab-intro" class="tab-content block space-y-6">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
@@ -178,6 +179,7 @@
             </div>
         </section>
 
+        <!-- Tab 2: 전사 -->
         <section id="tab-transcription" class="tab-content hidden space-y-6">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-4 flex-wrap gap-2">
@@ -187,12 +189,17 @@
                         </div>
                         <div>
                             <h2 class="text-xl font-bold text-slate-800">2단계 탐색: DNA → mRNA 전사(Transcription) 시뮬레이터</h2>
-                            <p class="text-sm text-slate-500">교사가 제시한 DNA 주형 가닥에 염기 상보성 규칙을 적용하여 mRNA를 합성해보세요.</p>
+                            <p class="text-sm text-slate-500">제시된 DNA 주형 가닥에 염기 상보성 규칙을 적용하여 mRNA를 합성해보세요.</p>
                         </div>
                     </div>
-                    <button onclick="resetTranscription()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium px-3 py-1.5 rounded-lg border border-slate-300 transition flex items-center gap-1">
-                        <i class="fa-solid fa-rotate-right"></i> 다시 하기
-                    </button>
+                    <div class="flex gap-2">
+                        <button onclick="generateNewRandomDNA()" class="text-xs bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-3 py-1.5 rounded-lg transition flex items-center gap-1 shadow">
+                            <i class="fa-solid fa-shuffle"></i> 새 DNA 문제 생성
+                        </button>
+                        <button onclick="resetTranscription()" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-600 font-medium px-3 py-1.5 rounded-lg border border-slate-300 transition flex items-center gap-1">
+                            <i class="fa-solid fa-rotate-right"></i> 입력 초기화
+                        </button>
+                    </div>
                 </div>
 
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
@@ -221,7 +228,7 @@
                 <div class="bg-slate-900 rounded-2xl p-6 text-white shadow-xl space-y-6">
                     <div>
                         <div class="flex items-center justify-between text-xs text-slate-400 font-mono mb-2">
-                            <span>DNA 주형 가닥 (3' → 5')</span>
+                            <span>DNA 주형 가닥 (3' → 5') [시작 코돈 TAC / 종결 코돈 ATT, ATC, ACT 포함]</span>
                         </div>
                         <div id="dna-strand-container" class="flex flex-wrap gap-2 p-3 bg-slate-800/80 rounded-xl border border-slate-700 font-mono text-lg font-bold min-h-[64px]">
                             <!-- JS Injection -->
@@ -231,7 +238,7 @@
                     <div>
                         <div class="flex items-center justify-between text-xs text-slate-400 font-mono mb-2">
                             <span>합성 중인 mRNA 가닥 (5' → 3')</span>
-                            <span id="transcription-progress" class="text-amber-400">진행률: 0 / 9</span>
+                            <span id="transcription-progress" class="text-amber-400">진행률: 0 / 0</span>
                         </div>
                         <div id="mrna-strand-container" class="flex flex-wrap gap-2 p-3 bg-slate-950 rounded-xl border border-indigo-900/60 font-mono text-lg font-bold min-h-[64px] items-center">
                             <!-- JS Injection -->
@@ -249,10 +256,10 @@
                         </div>
                     </div>
                 </div>
-                <div id="transcription-feedback" class="mt-4 p-4 rounded-xl border hidden text-center font-bold"></div>
             </div>
         </section>
 
+        <!-- Tab 3: 번역 -->
         <section id="tab-translation" class="tab-content hidden space-y-6">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
                 <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-4">
@@ -261,50 +268,121 @@
                     </div>
                     <div>
                         <h2 class="text-xl font-bold text-slate-800">3단계 적용: 코돈 해독과 단백질 번역(Translation)</h2>
+                        <p class="text-sm text-slate-500">전체 유전 암호표를 참조하여 mRNA의 코돈에 맞는 지정 아미노산을 찾아 번역을 완료하세요.</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
-                        <h3 class="font-bold text-sm text-slate-700 mb-3"><i class="fa-solid fa-table-cells"></i> 간이 유전 암호표</h3>
-                        <table class="w-full text-xs text-center border-collapse bg-white shadow-sm">
-                            <thead>
-                                <tr class="bg-slate-800 text-white">
-                                    <th class="p-2 border border-slate-700">코돈</th>
-                                    <th class="p-2 border border-slate-700">아미노산</th>
-                                </tr>
-                            </thead>
-                            <tbody class="text-slate-700">
-                                <tr>
-                                    <td class="p-2 border border-slate-300 font-mono">AUG</td>
-                                    <td class="p-2 border border-slate-300 font-bold text-emerald-600">메싸이오닌 (Met)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border border-slate-300 font-mono">GCC, GCU, GCA, GCG</td>
-                                    <td class="p-2 border border-slate-300 font-bold text-blue-600">알라닌 (Ala)</td>
-                                </tr>
-                                <tr>
-                                    <td class="p-2 border border-slate-300 font-mono">CGC, CGG, CGU, CGA</td>
-                                    <td class="p-2 border border-slate-300 font-bold text-purple-600">아르지닌 (Arg)</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+                    <!-- 전체 유전 암호표 (64개 코돈 전체 표) -->
+                    <div class="xl:col-span-7 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-bold text-sm text-slate-700 flex items-center gap-2">
+                                <i class="fa-solid fa-table-cells text-indigo-600"></i> 표준 유전 암호표 (64개 코돈 전체)
+                            </h3>
+                            <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-medium">AUG: 시작 / UAA,UAG,UGA: 종결</span>
+                        </div>
+                        
+                        <div class="overflow-x-auto max-h-[420px] overflow-y-auto border border-slate-300 rounded-lg bg-white shadow-inner">
+                            <table class="w-full text-xs text-center border-collapse">
+                                <thead class="sticky top-0 bg-slate-800 text-white z-10">
+                                    <tr>
+                                        <th class="p-2 border border-slate-700">1번째 염기</th>
+                                        <th class="p-2 border border-slate-700">2번째 염기: U</th>
+                                        <th class="p-2 border border-slate-700">2번째 염기: C</th>
+                                        <th class="p-2 border border-slate-700">2번째 염기: A</th>
+                                        <th class="p-2 border border-slate-700">2번째 염기: G</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 font-mono text-slate-700">
+                                    <!-- U 로 시작 -->
+                                    <tr>
+                                        <td class="font-bold bg-slate-100 border border-slate-300">U</td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>UUU: Phe</div><div>UUC: Phe</div><div>UUA: Leu</div><div>UUG: Leu</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>UCU: Ser</div><div>UCC: Ser</div><div>UCA: Ser</div><div>UCG: Ser</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>UAU: Tyr</div><div>UAC: Tyr</div>
+                                            <div class="bg-rose-100 text-rose-700 font-bold px-1 rounded">UAA: 종결</div>
+                                            <div class="bg-rose-100 text-rose-700 font-bold px-1 rounded">UAG: 종결</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>UGU: Cys</div><div>UGC: Cys</div>
+                                            <div class="bg-rose-100 text-rose-700 font-bold px-1 rounded">UGA: 종결</div>
+                                            <div>UGG: Trp</div>
+                                        </td>
+                                    </tr>
+                                    <!-- C 로 시작 -->
+                                    <tr>
+                                        <td class="font-bold bg-slate-100 border border-slate-300">C</td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>CUU: Leu</div><div>CUC: Leu</div><div>CUA: Leu</div><div>CUG: Leu</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>CCU: Pro</div><div>CCC: Pro</div><div>CCA: Pro</div><div>CCG: Pro</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>CAU: His</div><div>CAC: His</div><div>CAA: Gln</div><div>CAG: Gln</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>CGU: Arg</div><div>CGC: Arg</div><div>CGA: Arg</div><div>CGG: Arg</div>
+                                        </td>
+                                    </tr>
+                                    <!-- A 로 시작 -->
+                                    <tr>
+                                        <td class="font-bold bg-slate-100 border border-slate-300">A</td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>AUU: Ile</div><div>AUC: Ile</div><div>AUA: Ile</div>
+                                            <div class="bg-emerald-100 text-emerald-800 font-bold px-1 rounded">AUG: Met(시작)</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>ACU: Thr</div><div>ACC: Thr</div><div>ACA: Thr</div><div>ACG: Thr</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>AAU: Asn</div><div>AAC: Asn</div><div>AAA: Lys</div><div>AAG: Lys</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>AGU: Ser</div><div>AGC: Ser</div><div>AGA: Arg</div><div>AGG: Arg</div>
+                                        </td>
+                                    </tr>
+                                    <!-- G 로 시작 -->
+                                    <tr>
+                                        <td class="font-bold bg-slate-100 border border-slate-300">G</td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>GUU: Val</div><div>GUC: Val</div><div>GUA: Val</div><div>GUG: Val</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>GCU: Ala</div><div>GCC: Ala</div><div>GCA: Ala</div><div>GCG: Ala</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>GAU: Asp</div><div>GAC: Asp</div><div>GAA: Glu</div><div>GAG: Glu</div>
+                                        </td>
+                                        <td class="p-1.5 border border-slate-200">
+                                            <div>GGU: Gly</div><div>GGC: Gly</div><div>GGA: Gly</div><div>GGG: Gly</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
-                    <div class="space-y-4">
+                    <!-- 번역 실습 및 아미노산 선택 영역 -->
+                    <div class="xl:col-span-5 space-y-4">
                         <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
-                            <h3 class="font-bold text-sm text-indigo-900 mb-2">완성된 mRNA 서열</h3>
-                            <div id="completed-mrna" class="font-mono text-lg font-bold text-indigo-700 bg-white p-3 rounded-lg text-center border border-indigo-200">
-                                (전사 단계를 완료해주세요)
+                            <h3 class="font-bold text-sm text-indigo-900 mb-2">전사 완료된 mRNA 서열</h3>
+                            <div id="completed-mrna" class="font-mono text-lg font-bold text-indigo-700 bg-white p-3 rounded-lg text-center border border-indigo-200 shadow-sm">
+                                (2단계 전사 과정을 완료해 주세요)
                             </div>
                         </div>
 
                         <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                            <h3 class="font-bold text-sm text-slate-700 mb-3">코돈별 아미노산 선택</h3>
+                            <h3 class="font-bold text-sm text-slate-700 mb-3">코돈별 대응 아미노산/종결 선택</h3>
                             <div class="space-y-3" id="translation-inputs">
                                 <p class="text-sm text-slate-500 text-center py-4">전사 시뮬레이션을 끝내면 입력란이 나타납니다.</p>
                             </div>
-                            <button onclick="checkTranslation()" class="mt-4 w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2.5 rounded-lg transition">
+                            <button onclick="checkTranslation()" class="mt-4 w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-2.5 rounded-lg transition shadow">
                                 번역 결과 확인하기
                             </button>
                             <p id="translation-result" class="mt-3 text-sm font-semibold text-center hidden"></p>
@@ -314,6 +392,7 @@
             </div>
         </section>
 
+        <!-- Tab 4: 정리 및 제출 -->
         <section id="tab-summary" class="tab-content hidden space-y-6">
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 max-w-3xl mx-auto">
                 <div class="text-center mb-8">
@@ -321,15 +400,25 @@
                         <i class="fa-solid fa-flag-checkered text-3xl"></i>
                     </div>
                     <h2 class="text-2xl font-bold text-slate-800">탐구 완료 및 결과 제출</h2>
+                    <p class="text-sm text-slate-500 mt-1">모든 단계를 완료했는지 확인한 후 선생님께 제출해 주세요.</p>
                 </div>
                 <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 mb-6">
-                    <ul class="space-y-3 text-sm">
-                        <li class="flex justify-between"><span>1단계 방탈출</span> <span id="summary-escape">미완료</span></li>
-                        <li class="flex justify-between"><span>2단계 전사</span> <span id="summary-transcription">미완료</span></li>
-                        <li class="flex justify-between"><span>3단계 번역</span> <span id="summary-translation">미완료</span></li>
+                    <ul class="space-y-3 text-sm font-medium">
+                        <li class="flex justify-between items-center">
+                            <span>1단계: 암호 해독 (방탈출)</span> 
+                            <span id="summary-escape" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-600">미완료</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span>2단계: mRNA 전사 시뮬레이션</span> 
+                            <span id="summary-transcription" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-600">미완료</span>
+                        </li>
+                        <li class="flex justify-between items-center">
+                            <span>3단계: 코돈 번역 시뮬레이션</span> 
+                            <span id="summary-translation" class="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-600">미완료</span>
+                        </li>
                     </ul>
                 </div>
-                <button onclick="submitStudentData()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition text-lg">
+                <button onclick="submitStudentData()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl transition text-lg shadow-lg">
                     선생님께 제출하기
                 </button>
             </div>
@@ -337,6 +426,10 @@
 
         <div id="toast-container" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50 flex flex-col gap-2"></div>
     </main>
+
+    <footer class="bg-slate-100 border-t border-slate-200 text-center py-3 text-xs text-slate-500">
+        유전자 발현 과정 탐구 AI 웹앱 · 과학 II 디지털 수업 도구
+    </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -356,16 +449,87 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // 전체 코돈 - 아미노산 매핑 사전
+        const CODON_TABLE = {
+            'UUU':'Phe', 'UUC':'Phe', 'UUA':'Leu', 'UUG':'Leu',
+            'CUU':'Leu', 'CUC':'Leu', 'CUA':'Leu', 'CUG':'Leu',
+            'AUU':'Ile', 'AUC':'Ile', 'AUA':'Ile', 'AUG':'Met (시작)',
+            'GUU':'Val', 'GUC':'Val', 'GUA':'Val', 'GUG':'Val',
+            'UCU':'Ser', 'UCC':'Ser', 'UCA':'Ser', 'UCG':'Ser',
+            'CCU':'Pro', 'CCC':'Pro', 'CCA':'Pro', 'CCG':'Pro',
+            'ACU':'Thr', 'ACC':'Thr', 'ACA':'Thr', 'ACG':'Thr',
+            'GCU':'Ala', 'GCC':'Ala', 'GCA':'Ala', 'GCG':'Ala',
+            'UAU':'Tyr', 'UAC':'Tyr', 'UAA':'종결', 'UAG':'종결',
+            'CAU':'His', 'CAC':'His', 'CAA':'Gln', 'CAG':'Gln',
+            'AAU':'Asn', 'AAC':'Asn', 'AAA':'Lys', 'AAG':'Lys',
+            'GAU':'Asp', 'GAC':'Asp', 'GAA':'Glu', 'GAG':'Glu',
+            'UGU':'Cys', 'UGC':'Cys', 'UGA':'종결', 'UGG':'Trp',
+            'CGU':'Arg', 'CGC':'Arg', 'CGA':'Arg', 'CGG':'Arg',
+            'AGU':'Ser', 'AGC':'Ser', 'AGA':'Arg', 'AGG':'Arg',
+            'GGU':'Gly', 'GGC':'Gly', 'GGA':'Gly', 'GGG':'Gly'
+        };
+
+        const ALL_AMINO_ACIDS = [
+            'Met (시작)', 'Phe', 'Leu', 'Ile', 'Val', 'Ser', 'Pro', 'Thr', 
+            'Ala', 'Tyr', 'His', 'Gln', 'Asn', 'Lys', 'Asp', 'Glu', 
+            'Cys', 'Trp', 'Arg', 'Gly', '종결'
+        ];
+
         // 전역 상태 변수
-        window.targetDNA = "TACCGTCGC"; 
-        window.targetMRNA = "AUGGCAGCG"; 
-        window.targetAminoAcids = ["Met", "Ala", "Arg"];
+        window.targetDNA = ""; 
+        window.targetMRNA = ""; 
+        window.targetAminoAcids = [];
         window.currentMRNA = "";
         window.studentStatus = { escape: false, transcription: false, translation: false };
 
+        // 무작위 DNA 생성기 (시작 코돈 TAC, 종결 코돈 ATT/ATC/ACT 필수 포함)
+        window.generateNewRandomDNA = function() {
+            // 1. 시작 코돈: mRNA 'AUG' -> 주형 DNA 'TAC'
+            const mrnaCodons = ['AUG'];
+            const dnaCodons = ['TAC'];
+
+            // 2. 중간 무작위 아미노산 코돈 2개~3개 생성 (종결코돈 UAA, UAG, UGA 제외)
+            const nonStopCodons = Object.keys(CODON_TABLE).filter(c => CODON_TABLE[c] !== '종결' && c !== 'AUG');
+            const middleCount = Math.floor(Math.random() * 2) + 2; // 2개 또는 3개
+            
+            for(let i = 0; i < middleCount; i++) {
+                const randCodon = nonStopCodons[Math.floor(Math.random() * nonStopCodons.length)];
+                mrnaCodons.push(randCodon);
+                
+                // mRNA -> 주형 DNA 상보적 역변환 (A->T, U->A, C->G, G->C)
+                let dnaCodon = "";
+                for(let base of randCodon) {
+                    if(base === 'A') dnaCodon += 'T';
+                    else if(base === 'U') dnaCodon += 'A';
+                    else if(base === 'C') dnaCodon += 'G';
+                    else if(base === 'G') dnaCodon += 'C';
+                }
+                dnaCodons.push(dnaCodon);
+            }
+
+            // 3. 종결 코돈 생성: mRNA ['UAA', 'UAG', 'UGA'] 중 무작위 -> 주형 DNA ['ATT', 'ATC', 'ACT']
+            const stopPairs = [
+                { mrna: 'UAA', dna: 'ATT' },
+                { mrna: 'UAG', dna: 'ATC' },
+                { mrna: 'UGA', dna: 'ACT' }
+            ];
+            const chosenStop = stopPairs[Math.floor(Math.random() * stopPairs.length)];
+            mrnaCodons.push(chosenStop.mrna);
+            dnaCodons.push(chosenStop.dna);
+
+            // 상태 업데이트
+            window.targetDNA = dnaCodons.join("");
+            window.targetMRNA = mrnaCodons.join("");
+            window.targetAminoAcids = mrnaCodons.map(c => CODON_TABLE[c]);
+
+            window.resetTranscription();
+            window.initTranscriptionUI();
+            window.showToast("새로운 무작위 DNA 주형 가닥이 생성되었습니다!");
+        };
+
         // 초기화
         window.onload = () => {
-            window.initTranscriptionUI();
+            window.generateNewRandomDNA();
             window.updateSummaryUI();
         };
 
@@ -386,10 +550,14 @@
 
         // 탭 전환
         window.switchTab = function(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.replace('block', 'hidden'));
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('block');
+                el.classList.add('hidden');
+            });
             const targetTab = document.getElementById(`tab-${tabId}`);
             if(targetTab) {
-                targetTab.classList.replace('hidden', 'block');
+                targetTab.classList.remove('hidden');
+                targetTab.classList.add('block');
             }
             if(tabId === 'summary') window.updateSummaryUI();
         };
@@ -399,23 +567,23 @@
             const input = document.getElementById('escape-input').value.trim().toUpperCase();
             const resultEl = document.getElementById('escape-result');
             if(input === 'DNA') {
-                resultEl.textContent = "방탈출 성공!";
-                resultEl.className = "mt-3 text-emerald-600 block";
+                resultEl.textContent = "🎉 방탈출 성공! 암호가 정상 해독되었습니다.";
+                resultEl.className = "mt-3 text-emerald-600 font-bold block";
                 window.studentStatus.escape = true;
-                window.showToast("방탈출 성공!");
+                window.showToast("1단계 방탈출 성공!");
             } else {
-                resultEl.textContent = "암호 오류";
-                resultEl.className = "mt-3 text-rose-600 block";
+                resultEl.textContent = "❌ 암호 오류! 코드를 다시 해독해보세요.";
+                resultEl.className = "mt-3 text-rose-600 font-bold block";
             }
         };
 
         // 전사 UI 초기화
         window.initTranscriptionUI = function() {
             const dnaContainer = document.getElementById('dna-strand-container');
-            if(!dnaContainer) return; // 방어 로직
+            if(!dnaContainer) return;
             dnaContainer.innerHTML = '';
-            for(let i=0; i<window.targetDNA.length; i++) {
-                dnaContainer.innerHTML += `<span class="px-2 py-1 rounded bg-slate-700 text-slate-300">${window.targetDNA[i]}</span>`;
+            for(let i = 0; i < window.targetDNA.length; i++) {
+                dnaContainer.innerHTML += `<span class="px-2.5 py-1 rounded bg-slate-700 text-amber-300 border border-slate-600">${window.targetDNA[i]}</span>`;
             }
             window.updateMRNAUI();
         };
@@ -423,18 +591,20 @@
         window.addMRNABase = function(base) {
             if(window.currentMRNA.length >= window.targetDNA.length) return;
             const currentDNABase = window.targetDNA[window.currentMRNA.length];
-            const isCorrect = (currentDNABase === 'T' && base === 'A') || (currentDNABase === 'A' && base === 'U') || 
-                              (currentDNABase === 'C' && base === 'G') || (currentDNABase === 'G' && base === 'C');
+            const isCorrect = (currentDNABase === 'T' && base === 'A') || 
+                              (currentDNABase === 'A' && base === 'U') || 
+                              (currentDNABase === 'C' && base === 'G') || 
+                              (currentDNABase === 'G' && base === 'C');
             if(isCorrect) {
                 window.currentMRNA += base;
                 window.updateMRNAUI();
                 if(window.currentMRNA.length === window.targetDNA.length) {
                     window.studentStatus.transcription = true;
-                    window.showToast("전사 성공!");
+                    window.showToast("전사 과정 완성!");
                     window.setupTranslationUI(); 
                 }
             } else {
-                window.showToast("규칙 오류", "error");
+                window.showToast("염기 상보성 규칙 오류! (A↔U, T→A, G↔C)", "error");
             }
         };
 
@@ -452,8 +622,8 @@
             if(!mrnaContainer || !progress) return;
             
             mrnaContainer.innerHTML = '';
-            for(let i=0; i<window.currentMRNA.length; i++) {
-                mrnaContainer.innerHTML += `<span class="px-2 py-1 rounded text-white bg-slate-600">${window.currentMRNA[i]}</span>`;
+            for(let i = 0; i < window.currentMRNA.length; i++) {
+                mrnaContainer.innerHTML += `<span class="px-2.5 py-1 rounded text-white bg-indigo-600 border border-indigo-400">${window.currentMRNA[i]}</span>`;
             }
             progress.textContent = `진행률: ${window.currentMRNA.length} / ${window.targetDNA.length}`;
         };
@@ -462,6 +632,10 @@
             window.currentMRNA = "";
             window.studentStatus.transcription = false;
             window.updateMRNAUI();
+            const mrnaDisplay = document.getElementById('completed-mrna');
+            const inputContainer = document.getElementById('translation-inputs');
+            if(mrnaDisplay) mrnaDisplay.textContent = "(2단계 전사 과정을 완료해 주세요)";
+            if(inputContainer) inputContainer.innerHTML = '<p class="text-sm text-slate-500 text-center py-4">전사 시뮬레이션을 끝내면 입력란이 나타납니다.</p>';
         };
 
         // 번역 UI 설정
@@ -476,31 +650,42 @@
             inputContainer.innerHTML = '';
             
             codons.forEach((codon, index) => {
+                let optionsHTML = '<option value="">아미노산/종결 선택...</option>';
+                ALL_AMINO_ACIDS.forEach(aa => {
+                    optionsHTML += `<option value="${aa}">${aa}</option>`;
+                });
+
                 inputContainer.innerHTML += `
-                    <div class="flex items-center gap-3">
-                        <span class="font-mono bg-slate-100 px-3 py-1.5 rounded w-16 text-center">${codon}</span>
-                        <select id="codon-select-${index}" class="flex-grow p-2 rounded border border-slate-300">
-                            <option value="">아미노산 선택...</option>
-                            <option value="Met">Met</option>
-                            <option value="Ala">Ala</option>
-                            <option value="Arg">Arg</option>
+                    <div class="flex items-center gap-3 bg-slate-50 p-2 rounded-lg border border-slate-200">
+                        <span class="font-mono bg-indigo-900 text-white font-bold px-3 py-1.5 rounded text-sm">${index + 1}번 코돈: ${codon}</span>
+                        <select id="codon-select-${index}" class="flex-grow p-2 rounded border border-slate-300 text-sm font-semibold text-slate-700 focus:ring-2 focus:ring-sky-500 focus:outline-none">
+                            ${optionsHTML}
                         </select>
                     </div>`;
             });
         };
 
         window.checkTranslation = function() {
-            if(!window.studentStatus.transcription) return window.showToast("전사 먼저 완료", "error");
-            let correct = true;
-            for(let i=0; i<window.targetAminoAcids.length; i++) {
-                const sel = document.getElementById(`codon-select-${i}`);
-                if(!sel || sel.value !== window.targetAminoAcids[i]) correct = false;
+            if(!window.studentStatus.transcription) {
+                return window.showToast("2단계 전사 과정을 먼저 완료해주세요.", "error");
             }
+            let correct = true;
+            for(let i = 0; i < window.targetAminoAcids.length; i++) {
+                const sel = document.getElementById(`codon-select-${i}`);
+                if(!sel || sel.value !== window.targetAminoAcids[i]) {
+                    correct = false;
+                }
+            }
+            const resultEl = document.getElementById('translation-result');
             if(correct) {
                 window.studentStatus.translation = true;
+                resultEl.textContent = "🎉 정확합니다! 모든 코돈이 아미노산 및 종결로 번역되었습니다.";
+                resultEl.className = "mt-3 text-sm font-bold text-emerald-600 block";
                 window.showToast("번역 성공!");
             } else {
-                window.showToast("번역 오류", "error");
+                resultEl.textContent = "❌ 아미노산 표기 오류! 유전 암호표를 다시 확인해보세요.";
+                resultEl.className = "mt-3 text-sm font-bold text-rose-600 block";
+                window.showToast("번역 결과 오류", "error");
             }
         };
 
@@ -508,27 +693,43 @@
         window.updateSummaryUI = function() {
             const setBadge = (id, status) => {
                 const el = document.getElementById(id);
-                if(el) el.textContent = status ? "성공" : "미완료";
+                if(el) {
+                    el.textContent = status ? "완료" : "미완료";
+                    el.className = status 
+                        ? "px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-700" 
+                        : "px-2.5 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-600";
+                }
             }
             setBadge('summary-escape', window.studentStatus.escape);
             setBadge('summary-transcription', window.studentStatus.transcription);
             setBadge('summary-translation', window.studentStatus.translation);
         };
 
-        // 제출
+        // 최종 제출
         window.submitStudentData = async function() {
-            const g = document.getElementById('group-name').value.trim();
-            const n = document.getElementById('student-name').value.trim();
-            if(!g || !n) return window.showToast("이름 입력 필요", "error");
-
-            const id = `${g}_${n}`;
-            const data = { group: g, name: n, escape: window.studentStatus.escape, transcription: window.studentStatus.transcription, translation: window.studentStatus.translation, time: new Date().toLocaleTimeString('ko-KR') };
+            const group = document.getElementById('group-name').value.trim();
+            const name = document.getElementById('student-name').value.trim();
             
+            if(!group || !name) {
+                window.showToast("상단 헤더에 모둠명과 이름을 작성해 주세요.", "error");
+                return;
+            }
+
             try {
-                await set(ref(db, 'submissions/' + id), data);
-                window.showToast("제출 완료!");
+                const timestamp = Date.now();
+                const studentRef = ref(db, `submissions/${group}_${name}_${timestamp}`);
+                await set(studentRef, {
+                    group: group,
+                    name: name,
+                    targetDNA: window.targetDNA,
+                    targetMRNA: window.targetMRNA,
+                    status: window.studentStatus,
+                    submittedAt: new Date().toISOString()
+                });
+                window.showToast("선생님께 성공적으로 제출되었습니다!");
             } catch(e) {
-                window.showToast("에러 발생", "error");
+                console.error("제출 오류:", e);
+                window.showToast("제출 중 오류가 발생했습니다.", "error");
             }
         };
     </script>
